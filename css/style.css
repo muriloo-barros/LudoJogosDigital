@@ -5,12 +5,19 @@
     list-style: none;
 }
 
+@keyframes pulsar {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
 a{
     text-decoration: none;
 }
 
 body{
     background-color: #6DE4F9;
+    font-family: "Margarine", sans-serif;
 }
 
 .header{
@@ -35,19 +42,25 @@ body{
     height: 300px;
 }
 
+.logo img:hover{
+    animation: pulsar 1s infinite;
+}
+
 .nav-list{
     list-style: none;
     display: flex;
     gap: 3vw;
-    margin-right: 20em;
+    margin: 0 auto;
 }
 
 .nav-list a{
-    font-size: 6ch;
+    font-size: 5ch;
     color: white;
     padding-block: 16px;
+    transition: 0.3s ease;
 }
 
 .nav-list a:hover{
-    color: gold;
+    color: #FEE764;
+    transition: 0.3s ease;
 }
