@@ -3,7 +3,6 @@
     padding: 0;
     box-sizing: border-box;
     list-style: none;
-    overflow-x: hidden;
 }
 
 @keyframes pulsar { 
@@ -19,6 +18,10 @@ a{
 body{
     background-color: #6DE4F9;
     font-family: "Margarine", sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .header{
@@ -35,13 +38,14 @@ body{
 }
 
 .nav .logo{
+    position: relative;
     z-index: 10;
     height: 40vh;
 }
 
 .logo img{
     width: 300px;
-    height: 300px;
+    height: auto;
 }
 
 .logo img:hover{
@@ -81,18 +85,50 @@ body{
     height: 300px;
     position: absolute;
     right: 40%;
-    top: 50%;
+    top: 40%;
+}
+
+.nuvem3{
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    right: 10%;
+    top: 30%;
+}
+
+main{
+    flex: 1;
+    position: relative;
+    display: inline-block;
 }
 
 .morro{
+    display: block;
+    position: relative;
     z-index: -1;
     margin-top: 30vh;
     width: 100vw;
-    height: 100%;
+    height: auto;
 }
 
-footer{
+.texto-footer{
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    top: 98%;
+    font-size: 2em;
+    color: white;
+}
+
+.footer{
+    position: relative;
+    z-index: 10;
     height: 100px;
     width: 100vw;
-    background-color: red;
+    background-color: rgba(90, 35, 21, 0.514);
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
 }
+
