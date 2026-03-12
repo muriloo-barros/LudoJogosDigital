@@ -56,7 +56,7 @@ body{
     list-style: none;
     display: flex;
     gap: 3vw;
-    margin-right: 20vw;
+    margin: 0 auto;
     height: 10vh;
 }
 
@@ -131,4 +131,18 @@ main{
     align-items: center;
     align-content: center;
 }
+
+.leitura{
+    border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .leitura:hover {
+            background-color: #080202;
+        }
+
+
 
