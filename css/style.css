@@ -63,7 +63,7 @@ body{
     list-style: none;
     display: flex;
     gap: 3vw;
-    margin: 0 auto;
+    margin-right: 27vw;
     height: 10vh;
 }
 
@@ -206,8 +206,8 @@ main{
 
 #cursor-personalizado{
     position: fixed;
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
 
     background-image: url("../imgs/mouse.png");
     background-size: contain;
@@ -220,6 +220,20 @@ main{
     top: 0;
 }
 
+[vw-access-button]{
+    width: 110px !important;
+    height: 110px !important;
+    border-radius: 20px;
+    transform: scale(1.1);
+}
+
+[vw]{
+    position: fixed !important;
+    top: 120px;
+    right: 20px;
+    z-index: 9999;
+}
+
 @keyframes pulso{
 
     0%{transform: scale(1);}
@@ -227,5 +241,3 @@ main{
     100%{transform: scale(1);}
 
 }
-
-
