@@ -33,6 +33,9 @@ body{
 .header{
     height: 25vh;
     background-image: linear-gradient(to bottom, #00b3ff, #6de4f900);
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .nav{
