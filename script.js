@@ -50,3 +50,16 @@ new window.VLibras.Widget('https://vlibras.gov.br/app');
     });
 
 });
+
+// muda a cor da header conforme o scroll
+
+window.addEventListener('scroll', function() {
+  const header = document.getElementById('header');
+  
+  // Se rolar mais de 50px, adiciona a classe, senão, remove
+  if (window.scrollY > 750) {
+    header.classList.add('scrolled');
+  } else {
+    header.classList.remove('scrolled');
+  }
+});
