@@ -3,10 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- CORRIGIDO: meta description adicionada para SEO e compartilhamentos -->
-    <meta name="description" content="LudoGames — jogos educativos e divertidos para crianças. Explore, aprenda e se divirta!">
-
     <title>LudoGames</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="shortcut icon" href="imgs/favicon.png" type="image/x-icon">
@@ -17,27 +13,28 @@
 
 <body>
 
-    <div class="header-wrap">
-        <div class="grad-layer" id="azul"></div>
-        <div class="grad-layer" id="verde"></div>
-        <div class="grad-layer" id="marrom"></div>
+<div class="header-wrap">
+    <div class="grad-layer" id="azul"></div>
+    <div class="grad-layer" id="verde"></div>
+    <div class="grad-layer" id="marrom"></div>
 
         <header class="header" id="header">
             <nav class="nav">
-
+    
                 <div class="logo">
-                    <a href="index.html">
-                        <img src="imgs/logo.png" alt="LudoGames — página inicial">
-                    </a>
+                    <a href="index.html"><img src="imgs/logo.png" alt="LudoGamesLogo"></a>
                 </div>
-
+    
                 <ul class="nav-list">
-                    <li><a href="jogos.html"      class="narra-texto">Jogos</a></li>
-                    <li><a href="videos.html"     class="narra-texto">Vídeos</a></li>
-                    <li><a href="quemsomos.html"  class="narra-texto">Quem Somos</a></li>
+                    <li><a href="jogos.html" class="narra-texto">Jogos</a></li>
+                    <li><a href="videos.html" class="narra-texto">Vídeos</a></li>
+                    <li><a href="quemsomos.html" class="narra-texto">Quem Somos</a></li>
                 </ul>
+    
+            </nav>
+        </header>
+</div>
 
-<<<<<<< HEAD
 <section>
     <img src="imgs/nuvem.png" alt="nuvem" class="nuvem">
     <img src="imgs/nuvem.png" alt="nuvem" class="nuvem2">
@@ -49,63 +46,45 @@
     <p class="texto-footer leitura">© Todos os Direitos reservados para LudoGames.</p>
 </main>
 
-<!--Scripts/APIS-->
+
+
+
+
+
+
+
+
+
+
+
 
 <div vw class="enabled">
     <div vw-access-button class="active"></div>
     <div vw-plugin-wrapper class="wrapper">
         <div class="vw-plugin-top-wrapper"></div>
-=======
-            </nav>
-        </header>
->>>>>>> ea8d8f9d3ab6d4a02e0adc9ad8bc81030696bc12
     </div>
+</div>
 
-    <!-- CORRIGIDO: <section> trocado por <div aria-hidden="true"> pois as
-         nuvens são puramente decorativas e não representam conteúdo semântico.
-         alt="" nas imagens faz leitores de tela ignorarem-nas completamente. -->
-    <div aria-hidden="true">
-        <img src="imgs/nuvem.png" alt="" class="nuvem">
-        <img src="imgs/nuvem.png" alt="" class="nuvem2">
-        <img src="imgs/nuvem.png" alt="" class="nuvem3">
-    </div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
 
-    <main>
-        <img src="imgs/fundo.png" alt="" class="morro">
-    </main>
+<script src="script.js"></script>
 
-    <!-- CORRIGIDO: texto de copyright movido para dentro do <footer> semântico -->
-    <footer class="footer">
-        <p class="texto-footer leitura">© Todos os Direitos reservados para LudoGames.</p>
-    </footer>
+    <div id="legenda-container" aria-live="polite">
+    
+<div class="legenda-box">
+    <span class="icone-audio">🔊</span>
+    <span id="texto-legenda"></span>
+</div>
 
-    <!-- VLibras -->
-    <div vw class="enabled">
-        <div vw-access-button class="active"></div>
-        <div vw-plugin-wrapper class="wrapper">
-            <div class="vw-plugin-top-wrapper"></div>
-        </div>
-    </div>
+</div>
 
-    <!-- CORRIGIDO: defer adicionado para não bloquear o parser HTML -->
-    <script src="https://vlibras.gov.br/app/vlibras-plugin.js" defer></script>
+<div id="cursor-personalizado"></div>
 
-<<<<<<< HEAD
-<!--Scripts/APIS-->
-=======
-    <!-- Legenda de acessibilidade -->
-    <div id="legenda-container" aria-live="polite" aria-atomic="true">
-        <div class="legenda-box" role="status">
-            <span class="icone-audio" aria-hidden="true">🔊</span>
-            <span id="texto-legenda"></span>
-        </div>
-    </div>
+    <script>
 
-    <!-- Cursor personalizado -->
-    <div id="cursor-personalizado" aria-hidden="true"></div>
 
-    <script src="script.js" defer></script>
->>>>>>> ea8d8f9d3ab6d4a02e0adc9ad8bc81030696bc12
+
+</script>
 
 </body>
 </html>

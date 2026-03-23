@@ -157,15 +157,14 @@ main{
     z-index: var(--z-fundo);
     margin-top: 50vh;
     width: 100vw;
-    height: 100%;
-
+    height: auto;
 }
 
 .texto-footer{
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
-    top: 80%;
+    top: 98%;
     font-size: 2em;
     color: white;
 }
@@ -173,6 +172,9 @@ main{
 .footer{
     position: relative;
     z-index: 10;
+    height: 100px;
+    width: 100vw;
+    background-color: rgba(90, 35, 21, 0.514);
     text-align: center;
     justify-content: center;
     align-items: center;
