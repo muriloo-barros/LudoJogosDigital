@@ -2,11 +2,11 @@
 
 <div align="center">
 
-![LudoGames](https://mythos1233.github.io/LudoGamesDigital/imgs/logo.png)
+![LudoGames](https://muriloo-barros.github.io/LudoGamesDigital/imgs/logo.png)
 
 **Plataforma de jogos educacionais acessíveis para crianças de 6 a 8 anos**
 
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Online-brightgreen?style=for-the-badge&logo=github)](https://mythos1233.github.io/LudoGamesDigital/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Online-brightgreen?style=for-the-badge&logo=github)](https://muriloo-barros.github.io/LudoGamesDigital/)
 [![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/pt-BR/docs/Web/HTML)
 [![CSS](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/pt-BR/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
@@ -14,7 +14,7 @@
 > Trabalho de Conclusão de Curso — Informática para Internet  
 > ETEC Professor Adhemar Batista Heméritas
 
-[🌐 Acessar o site](https://mythos1233.github.io/LudoGamesDigital/) · [📋 Reportar um problema](https://github.com/Mythos1233/LudoGamesDigital/issues)
+[🌐 Acessar o site](https://muriloo-barros.github.io/LudoGamesDigital/) · [📋 Reportar um problema](https://github.com/muriloo-barros/LudoGamesDigital/issues)
 
 </div>
 
@@ -62,7 +62,7 @@ Não é necessário instalar nada — basta clonar e abrir no navegador.
 
 ```bash
 # Clone o repositório
-git clone https://github.com/Mythos1233/LudoGamesDigital.git
+git clone https://github.com/muriloo-barros/LudoGamesDigital.git
 
 # Entre na pasta
 cd LudoGamesDigital
