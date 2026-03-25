@@ -12,6 +12,7 @@
   padding: 0;
   box-sizing: border-box;
   list-style: none;
+  cursor: none;
 }
 
 /* cursor:none só no body — herdado por todos os filhos.
@@ -163,30 +164,124 @@ main {
   left: 50%;
   transform: translate(-50%, -50%);
   top: 70%;
-  font-size: 2em;
-  color: white;
-  height: 50vh;
+  height: 45vh;
   width: 80vw;
-  background-color: #6B3A1D;
+  background-color: transparent;
   border-radius: 300px;
   padding: 25px;
   align-items: center; /* Alinha verticalmente ao centro */
   justify-content: center;
   display: flex;
+  isolation: isolate;
 }
 
 .box2{
-  height: 40vh;
+  position: relative;
+  isolation: isolate;
+  height: 35vh;
   width: 75vw;
-  background-color: red;
+  background-color: transparent;
   border-radius: 300px;
 }
 
+.text{
+  font-size: 4em;
+  color: white;
+}
+
+.text2{
+  font-size: 2.5em;
+  color: white;
+}
+
 .box3{
-  height: 20vh;
+  height: 15vh;
   width: 75vw;
-  background-color: rgb(4, 0, 255);
   border-radius: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;    
+}
+
+.pai{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6vh;
+  padding-inline: 60px; /* empurra as bordas pra dentro */
+}
+
+.box4{
+  background-color: transparent;
+  height: 8vh;
+  width: 22vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 300px;
+  position: relative;
+  isolation: isolate;
+  transition: transform 0.3s ease-in-out;
+}
+
+.box5{
+  background-color: transparent;
+  height: 8vh;
+  width: 22vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 300px;
+  position: relative;
+  isolation: isolate;
+  transition: transform 0.3s ease-in-out;
+}
+
+.box6{
+  background-color: transparent;
+  height: 8vh;
+  width: 22vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 300px;
+  position: relative;
+  isolation: isolate;
+  transition: transform 0.3s ease-in-out;
+}
+
+.box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #6B3A1D;
+  border-radius: 300px;
+  filter: url(#textura-box);
+  z-index: -2;
+}
+
+.box2::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #A15A40;
+  border-radius: 300px;
+  filter: url(#textura-box);
+  z-index: -1;
+}
+
+.box4::before, .box5::before, .box6::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #6B3A1D;
+  border-radius: 300px;
+  filter: url(#textura-box);
+  z-index: -1;
+}
+
+.box4:hover, .box5:hover, .box6:hover{
+  transform: scale(1.1);
 }
 
 .texto-footer {
@@ -200,14 +295,15 @@ main {
 
 /* ─── Leitura ────────────────────────────────────────────────────── */
 .leitura {
-  border: 1px solid #ccc;
+  border-radius: 100px;
   padding: 10px;
   margin: 10px;
   transition: background 0.3s;
 }
 
 .leitura:hover {
-  background-color: #080202;
+  border-radius: 100px;
+  background-color: #0000003d;
 }
 
 /* ─── Legenda de acessibilidade ──────────────────────────────────── */

@@ -14,6 +14,16 @@
 
 <body>
 
+  <!-- Filtro SVG para textura nas boxes -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <filter id="textura-box" x="-5%" y="-10%" width="110%" height="130%">
+        <feTurbulence type="turbulence" baseFrequency="0.10" numOctaves="4" seed="3" result="noise"/>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="10" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+    </defs>
+  </svg>
+
     <div class="header-wrap">
         <div class="grad-layer" id="azul"></div>
         <div class="grad-layer" id="verde"></div>
@@ -47,10 +57,15 @@
 
     <main>
         <img src="imgs/fundo.png" alt="" class="morro">
-
+<a href=""></a>
         <div class="box">
             <div class="box2">
-                <div class="box3"></div>
+                <div class="box3"><p class="text leitura">Tipos de Jogos:</p></div>
+                <div class="pai">
+                    <div class="box4"><a href="#" class="text2 narra-texto">Deficiência Auditiva</a></div>
+                    <div class="box5"><a href="#" class="text2 narra-texto">Deficiência Visual</a></div>
+                    <div class="box6"><a href="#" class="text2 narra-texto">Neurodivergentes</a></div>
+                </div>
             </div>
         </div>
 
@@ -78,7 +93,7 @@
     <!-- Cursor personalizado -->
     <div id="cursor-personalizado" aria-hidden="true"></div>
 
-    <script src="script.js" defer></script>
+    <script src="script.js"></script>
 
 </body>
 </html>

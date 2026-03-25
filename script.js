@@ -11,13 +11,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const legendaBox   = document.querySelector(".legenda-box");
   const textoLegenda = document.getElementById("texto-legenda");
 
-  function falarTexto(e) {
-    if (!vozSuportada) return;
+  // ─── Função Fila / Ler Texto ─────────────────────────────────────────
+  let utteranceAtual = null;
 
-    window.speechSynthesis.cancel();
+  let fila = [];
+  let falando = false;
 
-    const texto = e.currentTarget.innerText.trim();
-    if (!texto) return;
+  function processarFila() {
+    if (falando || fila.length === 0) return;
+
+    falando = true;
+    const { texto } = fila.shift();
 
     const mensagem = new SpeechSynthesisUtterance(texto);
     mensagem.lang = "pt-BR";
@@ -27,13 +31,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
     mensagem.onend = function () {
       legendaBox.classList.remove("ativa");
+      falando = false;
+      processarFila(); // chama o próximo da fila
     };
 
     mensagem.onerror = function () {
       legendaBox.classList.remove("ativa");
+      falando = false;
+      processarFila();
     };
 
     window.speechSynthesis.speak(mensagem);
+  }
+
+  function falarTexto(e) {
+    if (!vozSuportada) return;
+
+    const texto = e.currentTarget.innerText.trim();
+    if (!texto) return;
+
+    fila.push({ texto });
+    processarFila();
   }
 
   // Leitura ao passar o mouse (menu)
@@ -61,15 +79,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const layers = [
     { el: document.getElementById("azul"),   threshold: 0    },
     { el: document.getElementById("verde"),  threshold: 750  },
-    { el: document.getElementById("marrom"), threshold: 1850 },
+    { el: document.getElementById("marrom"), threshold: 1850 },   
   ];
 
   // Thresholds dinâmicos — recalcula se o layout mudar
   function recalcularThresholds() {
     const alturaDoc = document.documentElement.scrollHeight;
     if (alturaDoc > 1000) {
-      layers[1].threshold = alturaDoc * 0.30;
-      layers[2].threshold = alturaDoc * 0.65;
+      layers[1].threshold = alturaDoc * 0.20;
+      layers[2].threshold = alturaDoc * 0.50;
     }
   }
 
