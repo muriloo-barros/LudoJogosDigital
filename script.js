@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const textoLegenda = document.getElementById("texto-legenda");
 
   // ─── Função Fila / Ler Texto ─────────────────────────────────────────
-  let utteranceAtual = null;
 
   let fila = [];
   let falando = false;

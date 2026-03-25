@@ -106,7 +106,7 @@ body {
 
 .nav-list a {
   font-size: 5ch;
-  color: white;
+  color: rgb(255, 255, 255);
   padding-block: 16px;
   transition: color 0.3s ease;
 }
