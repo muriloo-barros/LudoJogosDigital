@@ -38,14 +38,6 @@ a {
   100% { transform: scale(1); }
 }
 
-/* ─── Acessibilidade: reduz movimento ───────────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation: none !important;
-    transition: none !important;
-  }
-}
-
 /* ─── Acessibilidade: sem animações (toggle JS) ─────────────────── */
 body.sem-animacoes *, body.sem-animacoes *::before, body.sem-animacoes *::after {
   animation: none !important;
@@ -111,6 +103,7 @@ body {
 /* ─── Header ─────────────────────────────────────────────────────── */
 .header-wrap {
   height: auto;
+  width: 100%;
   background-color: transparent;
   position: sticky;
   top: 0;
@@ -159,7 +152,7 @@ body {
   list-style: none;
   display: flex;
   gap: 3vw;
-  margin-right: 27vw;
+  margin-right: 10vw;
   height: 5vh;
   z-index: var(--z-header);
 }
@@ -271,7 +264,7 @@ body {
   position: fixed;
   top: 0;
   right: 0;
-  width: 320px;
+  width: 400px;
   height: 100vh;
   background: #3d1f0a;
   z-index: var(--z-overlay);
