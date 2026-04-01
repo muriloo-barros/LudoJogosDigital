@@ -47,6 +47,12 @@ body.sem-animacoes *, body.sem-animacoes *::before, body.sem-animacoes *::after 
 /* ─── Acessibilidade: alto contraste ────────────────────────────── */
 body.alto-contraste {
   background-color: #000 !important;
+}
+
+/* filter no body quebra position:fixed — aplicar só nos elementos de conteúdo */
+body.alto-contraste .header-wrap,
+body.alto-contraste main,
+body.alto-contraste .sidebar-acessibilidade {
   filter: contrast(1.5);
 }
 
@@ -62,13 +68,19 @@ body.fonte-pequena { font-size: 14px; }
 body.fonte-normal  { font-size: 16px; }
 body.fonte-grande  { font-size: 20px; }
 
-body.fonte-grande .text  { font-size: 4.5em; }
-body.fonte-grande .text2 { font-size: 3em; }
-body.fonte-grande .caixa { font-size: 2.4em; }
+body.fonte-grande .text       { font-size: 4.5em; }
+body.fonte-grande .text2      { font-size: 2.4em; }
+body.fonte-grande .caixa      { font-size: 1.9em; }
+body.fonte-grande .box        { height: 58vh; }
+body.fonte-grande .box2       { height: 48vh; }
+body.fonte-grande .box3       { height: 18vh; }
+body.fonte-grande .box4,
+body.fonte-grande .box5,
+body.fonte-grande .box6       { height: 14vh; width: 26vw; }
 
-body.fonte-pequena .text  { font-size: 3.2em; }
-body.fonte-pequena .text2 { font-size: 2em; }
-body.fonte-pequena .caixa { font-size: 1.6em; }
+body.fonte-pequena .text      { font-size: 3.2em; }
+body.fonte-pequena .text2     { font-size: 2em; }
+body.fonte-pequena .caixa     { font-size: 1.6em; }
 
 /* ─── Acessibilidade: foco visível ──────────────────────────────── */
 :focus-visible {
@@ -622,6 +634,7 @@ main {
   top: 75%;
   left: 50%;
   color: #fff;
+  width: 60vw;
 }
 
 .videos-yt{
