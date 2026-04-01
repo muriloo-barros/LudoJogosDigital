@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LudoGames — jogos educativos e divertidos para crianças. Explore, aprenda e se divirta!">
+    <title>LudoGames</title>
+    <link rel="stylesheet" href="css/videos.css">
+    <link rel="shortcut icon" href="imgs/favicon.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Margarine&display=swap" rel="stylesheet">
+</head>
+    
+<body>
+
+    <!-- Filtro SVG para textura nas boxes -->
+    <svg width="0" height="0" style="position:absolute">
+    <defs>
+        <filter id="textura-box" x="-5%" y="-10%" width="110%" height="130%">
+        <feTurbulence type="turbulence" baseFrequency="0.10" numOctaves="4" seed="3" result="noise"/>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="10" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+    </defs>
+    </svg>
+
+    <div class="header-wrap">
+        <div class="grad-layer" id="azul"></div>
+        <div class="grad-layer" id="verde"></div>
+        <div class="grad-layer" id="marrom"></div>
+
+        <header class="header" id="header">
+            <nav class="nav">
+
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="imgs/logo.png" alt="LudoGames — página inicial">
+                    </a>
+                </div>
+
+                <ul class="nav-list">
+                    <li><a href="jogos.html"     class="narra-texto">Jogos</a></li>
+                    <li><a href="videos.html"    class="narra-texto">Vídeos</a></li>
+                    <li><a href="quemsomos.html" class="narra-texto">Quem Somos</a></li>
+                </ul>
+
+                 <!-- Passarinho do header -->
+                <div class="passarinho" id="passarinho" aria-hidden="true">
+                    <img src="imgs/prikito1.png" alt="">
+                </div>
+
+                <!-- Botão de acessibilidade -->
+                <button class="btn-acessibilidade" id="btnAcessibilidade" aria-label="Abrir painel de acessibilidade" title="Acessibilidade">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M12 15.5A3.5 3.5 0 0 1 8.5 12 3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.92c.04-.3.07-.62.07-.96s-.03-.66-.07-1l2.15-1.68c.19-.15.24-.42.12-.64l-2.04-3.53c-.12-.22-.39-.3-.61-.22l-2.54 1.02c-.52-.4-1.08-.73-1.69-.98l-.38-2.7C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.7c-.61.25-1.17.59-1.69.98L4.9 5.08c-.22-.08-.49 0-.61.22L2.25 8.83c-.13.22-.07.49.12.64l2.15 1.68c-.04.34-.07.67-.07 1s.03.65.07.96l-2.15 1.7c-.19.14-.24.42-.12.63l2.04 3.54c.12.22.39.3.61.22l2.54-1.01c.52.4 1.08.73 1.69.98l.38 2.7c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.7c.61-.25 1.17-.58 1.69-.98l2.54 1.01c.22.08.49 0 .61-.22l2.04-3.54c.12-.21.07-.49-.12-.63l-2.15-1.7z"/>
+                    </svg>
+                </button>
+
+            </nav>
+        </header>
+    </div>
+
+    <!-- Overlay do painel de acessibilidade -->
+    <div class="sb-overlay" id="sbOverlay" aria-hidden="true"></div>
+
+    <!-- Painel lateral de acessibilidade -->
+    <aside class="sidebar-acessibilidade" id="sidebarAcessibilidade" aria-label="Painel de acessibilidade" aria-hidden="true">
+
+        <div class="sb-header">
+            <h2 class="sb-titulo">Acessibilidade</h2>
+            <button class="sb-fechar" id="btnFechar" aria-label="Fechar painel">✕</button>
+        </div>
+
+        <!-- ÁUDIO -->
+        <section class="sb-secao">
+            <h3 class="sb-secao-titulo">Áudio</h3>
+
+            <div class="sb-row">
+                <label class="sb-label" for="togVoz">
+                    <span aria-hidden="true">🔊</span> Narração por voz
+                </label>
+                <label class="toggle">
+                    <input type="checkbox" id="togVoz" checked>
+                    <span class="slider-tog"></span>
+                </label>
+            </div>
+
+            <div class="sb-row">
+                <label class="sb-label" for="togLegenda">
+                    <span aria-hidden="true">📝</span> Legendas
+                </label>
+                <label class="toggle">
+                    <input type="checkbox" id="togLegenda" checked>
+                    <span class="slider-tog"></span>
+                </label>
+            </div>
+
+            <div class="sb-row" id="rowVelocidade">
+                <span class="sb-label"><span aria-hidden="true">⏩</span> Velocidade</span>
+                <div class="btn-grupo" role="group" aria-label="Velocidade da narração">
+                    <button class="btn-op" data-vel="0.7">Lenta</button>
+                    <button class="btn-op ativo" data-vel="1">Normal</button>
+                    <button class="btn-op" data-vel="1.5">Rápida</button>
+                </div>
+            </div>
+        </section>
+
+        <hr class="sb-divider">
+
+        <!-- VISUAL -->
+        <section class="sb-secao">
+            <h3 class="sb-secao-titulo">Visual</h3>
+
+            <div class="sb-row">
+                <label class="sb-label" for="togAnim">
+                    <span aria-hidden="true">✨</span> Animações
+                </label>
+                <label class="toggle">
+                    <input type="checkbox" id="togAnim" checked>
+                    <span class="slider-tog"></span>
+                </label>
+            </div>
+
+            <div class="sb-row">
+                <label class="sb-label" for="togContraste">
+                    <span aria-hidden="true">🌗</span> Alto contraste
+                </label>
+                <label class="toggle">
+                    <input type="checkbox" id="togContraste">
+                    <span class="slider-tog"></span>
+                </label>
+            </div>
+
+            <div class="sb-row">
+                <span class="sb-label"><span aria-hidden="true">🔤</span> Tamanho da fonte</span>
+                <div class="btn-grupo" role="group" aria-label="Tamanho da fonte">
+                    <button class="btn-op" data-fonte="pequena">P</button>
+                    <button class="btn-op ativo" data-fonte="normal">M</button>
+                    <button class="btn-op" data-fonte="grande">G</button>
+                </div>
+            </div>
+        </section>
+
+        <hr class="sb-divider">
+
+        <!-- OUTROS -->
+        <section class="sb-secao">
+            <h3 class="sb-secao-titulo">Outros</h3>
+
+            <div class="sb-row">
+                <label class="sb-label" for="togCursor">
+                    <span aria-hidden="true">🖱️</span> Cursor personalizado
+                </label>
+                <label class="toggle">
+                    <input type="checkbox" id="togCursor" checked>
+                    <span class="slider-tog"></span>
+                </label>
+            </div>
+        </section>
+
+    </aside>
+
+    <main>
+        <h1 class="text-videos">APROVEITE ESSES VÍDEOS INFANTIS: </h1>
+
+        <div class="videos-yt">
+            <div class="video-1">
+                <iframe width="672" height="378" src="https://www.youtube.com/embed/pFaCF2pnTRM?si=43in24aMMklLgIde" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-2">
+                <iframe width="672" height="378" src="https://www.youtube.com/embed/zg6dk6F3Cp8?si=j4UHb7I_pWI8t7Dz" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+                <div class="video-3">
+                <iframe width="672" height="378" src="https://www.youtube.com/embed/zg6dk6F3Cp8?si=j4UHb7I_pWI8t7Dz" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+                <div class="video-4">
+                <iframe width="672" height="378" src="https://www.youtube.com/embed/zg6dk6F3Cp8?si=j4UHb7I_pWI8t7Dz" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- VLibras -->
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper class="wrapper">
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js" defer></script>
+
+    <!-- Legenda de acessibilidade -->
+    <div id="legenda-container" aria-live="polite" aria-atomic="true">
+        <div class="legenda-box" role="status">
+            <span class="icone-audio" aria-hidden="true">🔊</span>
+            <span id="texto-legenda"></span>
+        </div>
+    </div>
+
+    <!-- Cursor personalizado -->
+    <div id="cursor-personalizado" aria-hidden="true"></div>
+
+    <script src="script.js" defer></script>
