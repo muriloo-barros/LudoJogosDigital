@@ -634,7 +634,8 @@ main {
   top: 75%;
   left: 50%;
   color: #fff;
-  width: 60vw;
+  width: 70vw;
+  text-align: center;
 }
 
 .videos-yt{
