@@ -437,6 +437,60 @@ body {
 
 /* ─── Main ───────────────────────────────────────────────────────── */
 
+.nuvem {
+  width: 500px;
+  height: 500px;
+  position: absolute;
+  left: 5%;
+  top: 10%;
+  z-index: var(--z-fundo);
+}
+
+.nuvem2 {
+  width: 500px;
+  height: 500px;
+  position: absolute;
+  right: 55%;
+  top: 50%;
+  z-index: var(--z-fundo);
+}
+
+.nuvem3 {
+  width: 500px;
+  height: 500px;
+  position: absolute;
+  right: 25%;
+  top: 25%;
+  z-index: var(--z-fundo);
+}
+
+.nuvem4 {
+  width: 500px;
+  height: 500px;
+  position: absolute;
+  left: 0%;
+  top: 100%;
+  z-index: var(--z-fundo);
+}
+
+.nuvem5 {
+  width: 500px;
+  height: 500px;
+  position: absolute;
+  right: 0%;
+  top: 67%;
+  z-index: var(--z-fundo);
+}
+
+.nuvem6 {
+  width: 500px;
+  height: 500px;
+  position: absolute;
+  right: 5%;
+  top: -3%;
+  z-index: var(--z-fundo);
+}
+
 main{
     z-index: var(--z-conteudo);
 }

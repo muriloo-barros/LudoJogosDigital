@@ -481,7 +481,7 @@ body {
 
 .main-card{
     position: relative;
-    background-color: #6ad5ffdb;
+    background-color: #58b4ffdb;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -493,7 +493,7 @@ body {
 }
 
 .titulo-card{
-    -webkit-text-stroke: 15px #6ad5ff;
+    -webkit-text-stroke: 15px #58b4ff;
     paint-order: stroke fill;
     color: white;
     position: absolute;
@@ -514,7 +514,7 @@ body {
 
 .card-pessoas{
     position: relative;
-    background-color: #6ad5ffdb;
+    background-color: #58b4ffdb;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -525,7 +525,7 @@ body {
 }
 
 .titulo-pessoas{
-    -webkit-text-stroke: 10px #6ad5ff;
+    -webkit-text-stroke: 10px #58b4ff;
     paint-order: stroke fill;
     color: white;
     position: absolute;
