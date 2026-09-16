@@ -44,17 +44,33 @@ const msgFinal   = document.getElementById('mensagem-final');
 let tokenFala = 0;
 
 function falarSeguro(texto, callback) {
-    // Incrementa token — invalida callbacks de falas antigas
     tokenFala++;
     const meuToken = tokenFala;
 
-    // Tenta usar falar() do site.js (global)
+    let callbackChamado = false;
+    function dispararCallback() {
+        if (callbackChamado) return;
+        callbackChamado = true;
+        if (meuToken === tokenFala && typeof callback === 'function') {
+            callback();
+        }
+    }
+
+    // ⏱️ Timeout de segurança:callback SEMPRE dispara, mesmo se a
+    // narração falhar, for interrompida ou não suportar callback.
+    // Piso calculado como no site.js: caracteres × 60ms + 1s de folga.
+    const tempoSeguranca = Math.max(1500, texto.length * 60 + 1000);
+    setTimeout(dispararCallback, tempoSeguranca);
+
+    // Tenta usar falar() do site.js
     if (typeof falar === 'function') {
-        falar(texto, function() {
-            if (meuToken === tokenFala && typeof callback === 'function') {
-                callback();
-            }
-        });
+        try {
+            falar(texto, function() {
+                if (meuToken === tokenFala) dispararCallback();
+            });
+        } catch (e) {
+            // falar() pode nem aceitar segundo argumento — segue o timeout
+        }
         return;
     }
 
@@ -63,31 +79,23 @@ function falarSeguro(texto, callback) {
         window.speechSynthesis.cancel();
         const utt = new SpeechSynthesisUtterance(texto);
         utt.lang = 'pt-BR';
-        // Tenta usar velocidade do site.js se existir
         if (typeof config !== 'undefined' && config.velocidade) {
             utt.rate = config.velocidade;
-        } else {
-            utt.rate = 1;
         }
         utt.onend = function() {
-            // Chrome bug: onend dispara antes da fala terminar de verdade
-            // Piso mínimo de tempo baseado em caracteres
+            // Chrome bug: onend dispara antes da fala de verdade terminar
             const minMs = Math.max(800, texto.length * 55);
             const elapsed = Date.now() - startTime;
-            const wait = Math.max(0, minMs - elapsed);
             setTimeout(function() {
-                if (meuToken === tokenFala && typeof callback === 'function') {
-                    callback();
-                }
-            }, wait);
+                if (meuToken === tokenFala) dispararCallback();
+            }, Math.max(0, minMs - elapsed));
         };
         const startTime = Date.now();
         window.speechSynthesis.speak(utt);
         return;
     }
 
-    // Sem suporte a fala — só chama callback
-    if (typeof callback === 'function') callback();
+    // Sem suporte nenhum — callback já está garantido pelo timeout
 }
 
 function mostrarLegenda(texto) {
@@ -327,13 +335,18 @@ function atualizarHUD() {
 function faseCompleta() {
     somVitoria();
 
+    const faseTerminada = faseAtual + 1; // número humano da fase acabada
+
+    // Avança independente do callback — o callback só NARRA, nunca controla o fluxo
     if (faseAtual < fases.length - 1) {
         faseAtual++;
-        const frase = 'Você chegou na casinha! 🏡 Fase ' + faseAtual + ' completa! Próxima fase.';
-        falarSeguro(frase, () => {
-            setTimeout(() => iniciarFase(), 1000);
-        });
+
+        const frase = 'Você chegou na casinha! Fase ' + faseTerminada + ' completa! Agora a fase ' + faseAtual + 1 + '.';
+        falarSeguro(frase);
         mostrarLegenda(frase);
+
+        // Carrega próxima fase SEM depender do callback de narração
+        setTimeout(() => iniciarFase(), 1200);
     } else {
         mostrarFinal();
     }
