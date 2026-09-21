@@ -21,6 +21,8 @@ let maze = null;
 let tamanho = 0;
 let playerX = 0, playerY = 0;
 let exitX = 0, exitY = 0;
+let modoMapa = false;
+let celulasMapa = [];
 
 // ─── DOM ─────────────────────────────────────────────────────────
 const telaInicio = document.getElementById('tela-inicio');
@@ -39,6 +41,9 @@ const hudDist    = document.getElementById('hud-dist');
 const gameArea   = document.getElementById('gameArea');
 const proxPreench = document.getElementById('proximidadePreenchimento');
 const msgFinal   = document.getElementById('mensagem-final');
+const togMapaTutor = document.getElementById('togMapaTutor');
+const mapaLateral  = document.getElementById('mapaLateral');
+const mapaTempoReal = document.getElementById('mapaTempoReal');
 
 // ─── Narração (usa falar() do site.js se disponível, senão Web Speech direto) ─
 let tokenFala = 0;
@@ -226,6 +231,47 @@ function renderPreview() {
     }
 }
 
+// ─── Mapa do tutor (tempo real) ─────────────────────────────────
+let marcadorPassarinho = null;
+
+function renderMapaLateral() {
+    if (!mapaTempoReal) return;
+    mapaTempoReal.innerHTML = '';
+    mapaTempoReal.style.gridTemplateColumns = 'repeat(' + tamanho + ', 1fr)';
+    mapaTempoReal.style.gridTemplateRows = 'repeat(' + tamanho + ', 1fr)';
+    celulasMapa = [];
+    for (let y = 0; y < tamanho; y++) {
+        for (let x = 0; x < tamanho; x++) {
+            const cell = document.createElement('div');
+            cell.className = 'maze-cell ' + (maze[y][x] === 0 ? 'path' : 'wall');
+            if (x === 0 && y === 0) { cell.classList.add('start'); cell.classList.remove('path'); }
+            if (x === exitX && y === exitY) { cell.classList.add('exit'); cell.classList.remove('path'); }
+            mapaTempoReal.appendChild(cell);
+            celulasMapa.push(cell);
+        }
+    }
+        // Cria o marcador UMA vez — ele flutua sobre o grid e nunca é apagado
+    marcadorPassarinho = document.createElement('div');
+    marcadorPassarinho.className = 'passarinho-marcador';
+    mapaTempoReal.appendChild(marcadorPassarinho);
+    // Espera o layout ser calculado antes de medir as células
+    requestAnimationFrame(function () {
+        atualizarMapaLateral();
+    });
+}
+
+function atualizarMapaLateral() {
+    if (!marcadorPassarinho || !mapaTempoReal) return;
+    // Tamanho de cada célula = largura do grid ÷ número de colunas
+    const larguraCelula = mapaTempoReal.clientWidth / tamanho;
+    const alturaCelula  = mapaTempoReal.clientHeight / tamanho;
+    marcadorPassarinho.style.width  = larguraCelula + 'px';
+    marcadorPassarinho.style.height = alturaCelula + 'px';
+    marcadorPassarinho.style.fontSize = (larguraCelula * 0.7) + 'px';
+    marcadorPassarinho.style.left = (playerX * larguraCelula) + 'px';
+    marcadorPassarinho.style.top  = (playerY * alturaCelula) + 'px';
+}
+
 // ─── Trocar de tela ──────────────────────────────────────────────
 function trocarTela(nova) {
     [telaInicio, telaFase, telaJogo, telaFinal].forEach(t => t.classList.add('escondido'));
@@ -259,6 +305,13 @@ function iniciarJogoFase() {
     hudFase.textContent = 'FASE ' + (faseAtual + 1) + '/' + fases.length;
     atualizarHUD();
     setTimeout(() => gameArea.focus(), 100);
+    modoMapa = !!(togMapaTutor && togMapaTutor.checked);
+    if (modoMapa) {
+        mapaLateral.classList.add('visivel');
+        renderMapaLateral();
+    } else {
+        mapaLateral.classList.remove('visivel');
+    }
 
     const frase = 'Jogo iniciado! Você é o passarinho. Use as setas para voar pelo labirinto. ' +
                   'Pressione espaço para ouvir quais direções estão livres. ' +
@@ -292,6 +345,7 @@ function tentarMover(dx, dy, dir) {
     somProximidade(dist, maxDist);
 
     atualizarHUD();
+    if (modoMapa) atualizarMapaLateral();
 
     // Chegou na casinha?
     if (playerX === exitX && playerY === exitY) {
@@ -400,6 +454,11 @@ function onKeydown(e) {
 btnStart.addEventListener('click', function() {
     faseAtual = 0;
     iniciarFase();
+});
+
+// Reposiciona o marcador se a janela mudar de tamanho
+window.addEventListener('resize', function () {
+    if (modoMapa) atualizarMapaLateral();
 });
 
 btnJogarFase.addEventListener('click', iniciarJogoFase);

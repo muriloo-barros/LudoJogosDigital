@@ -172,7 +172,7 @@ body.alto-contraste .placa-header .btn-musica, body.alto-contraste .placa-header
 .titulo-jogo { color: #fff; font-size: 46px; text-shadow: 4px 4px 0px #05c46b; margin: 14px 0; line-height: 1; }
 .titulo-jogo .destaque { color: #ffdd59; font-size: 52px; text-shadow: 4px 4px 0px #ff5e57; }
 .subtitulo { color: #d2dae2; font-size: 22px; }
-.guia-rapido-tutor { background: rgba(255,255,255,0.1); border: 2px dashed #ffd32a; padding: 16px; border-radius: 14px; color: #fff; font-size: 20px; text-align: center; }
+.guia-rapido-tutor { background: rgba(255,255,255,0.1); border: 2px dashed #ffd32a; padding: 16px; border-radius: 14px; color: #fff; font-size: 20px; text-align: center; justify-content: center;}
 .guia-rapido-tutor strong { color: #ffd32a; }
 
 /* ─── Botão start ───────────────────────────────────────────────── */
@@ -221,7 +221,7 @@ body.alto-contraste .placa-header .btn-musica, body.alto-contraste .placa-header
 .maze-cell.wall { background: #3d1f0a; }
 .maze-cell.path { background: #87CEEB; }
 .maze-cell.start { background: #4CAF50; position: relative; }
-.maze-cell.start::after { content: '🐤'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 0.7em; }
+.maze-cell.start::after { content: '🚩'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 0.7em; }
 .maze-cell.exit { background: #FEE764; position: relative; }
 .maze-cell.exit::after { content: '🏡'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 0.7em; }
 
@@ -268,3 +268,90 @@ body.sem-animacoes .audio-pulse { animation: none; }
 body.alto-contraste .maze-cell.wall { background: #FFFF00; }
 body.alto-contraste .maze-cell.path { background: #000; border: 1px solid #fff; }
 body.sem-animacoes .titulo-vitoria, body.sem-animacoes .medalha-animada { animation: none !important; }
+
+/* ════════════════════════════════════════════════════════════════ */
+/* ─── Modo tutor: mapa lateral em tempo real ───────────────────── */
+/* ════════════════════════════════════════════════════════════════ */
+
+.modo-tutor-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #fff;
+    font-size: 20px;
+}
+
+.game-area-conteudo {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.painel-audio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+/* O mapa só aparece quando o modo tutor está ligado */
+.mapa-lateral {
+    display: none;
+    background: rgba(255, 255, 255, 0.12);
+    border: 2px solid #ffd32a;
+    border-radius: 16px;
+    padding: 14px;
+    flex-shrink: 0;
+    /* Largura fixa: quebra a dependência circular do flex */
+    width: 270px;
+}
+.mapa-lateral.visivel { display: block; }
+
+.mapa-titulo {
+    color: #ffd32a;
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Largura FIXA em px — nunca porcentagem dentro de flex-row */
+.mapa-lateral .maze-preview {
+    width: 240px;
+    max-width: none;
+    height: 240px;
+}
+
+.passarinho-marcador {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 2;
+    transition: left 0.15s ease, top 0.15s ease;
+}
+body.sem-animacoes .passarinho-marcador { transition: none; }
+
+.passarinho-marcador::after {
+    content: '🐤';
+    font-size: 0.85em;
+    line-height: 1;
+}
+
+/* Alto contraste */
+body.alto-contraste .mapa-lateral { border-color: #FFFF00; }
+body.alto-contraste .maze-cell.passarinho { background: #FFFF00; }
+
+@media (max-width: 480px) {
+    .mapa-lateral .maze-preview { max-width: 170px; }
+    .game-area-conteudo { gap: 16px; }
+}
+
+/* ── FIX: o marcador do passarinho precisa se ancorar no próprio mapa ── */
+.maze-preview,
+.mapa-lateral .maze-preview {
+    position: relative;
+}

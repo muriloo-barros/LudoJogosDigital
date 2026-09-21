@@ -98,6 +98,15 @@
                 <div class="guia-rapido-tutor">
                     <p><strong>Aviso ao Tutor:</strong> Jogo 100% guiado por áudio, pensado para crianças cegas. A criança usa as <strong>setas do teclado</strong> para se mover pelo labirinto. Cada direção livre ou bloqueada é anunciada por narração. Bipes ficam mais agudos perto da saída. <strong>Espaço</strong> ativa o sonar que narra as 4 direções. O labirinto é mostrado visualmente apenas nesta tela, depois o jogo é só áudio.</p>
                 </div>
+
+                <div class="modo-tutor-toggle">
+                    <label class="toggle">
+                        <input type="checkbox" id="togMapaTutor">
+                        <span class="slider-tog"></span>
+                    </label>
+                    <span>👩‍🏫 Modo tutor: mostrar mapa</span>
+                </div>
+
                 <button id="btn-start" class="btn-start">Jogar</button>
             </div>
 
@@ -120,15 +129,23 @@
                     <span id="hud-dist" class="hud-item">Distância: 8</span>
                 </div>
                 <div class="game-area" id="gameArea" tabindex="0" role="application" aria-label="Área do jogo. Use as setas para mover e espaço para sonar.">
-                    <div class="audio-indicator">
-                        <span class="audio-pulse" aria-hidden="true">🔊</span>
-                        <p class="audio-texto">Modo Áudio</p>
-                    </div>
-                    <p class="controles-lembrete">Setas: mover &nbsp;|&nbsp; Espaço: sonar</p>
-                    <div class="proximidade-container">
-                        <p class="proximidade-label">Próximo da saída:</p>
-                        <div class="proximidade-barra">
-                            <div class="proximidade-preenchimento" id="proximidadePreenchimento" style="width: 0%"></div>
+                    <div class="game-area-conteudo">
+                        <div class="painel-audio">
+                            <div class="audio-indicator">
+                                <span class="audio-pulse" aria-hidden="true">🔊</span>
+                                <p class="audio-texto">Modo Áudio</p>
+                            </div>
+                            <p class="controles-lembrete">Setas: mover &nbsp;|&nbsp; Espaço: sonar</p>
+                            <div class="proximidade-container">
+                                <p class="proximidade-label">Próximo da casinha:</p>
+                                <div class="proximidade-barra">
+                                    <div class="proximidade-preenchimento" id="proximidadePreenchimento" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mapa-lateral" id="mapaLateral">
+                            <p class="mapa-titulo">Mapa do tutor</p>
+                            <div class="maze-preview" id="mapaTempoReal"></div>
                         </div>
                     </div>
                 </div>

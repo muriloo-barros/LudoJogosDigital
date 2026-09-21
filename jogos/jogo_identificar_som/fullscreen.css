@@ -266,3 +266,70 @@ body.modo-foco .medalha-animada,
 .console-frame:fullscreen .medalha-animada { font-size: 140px; }
 body.modo-foco .texto-vitoria,
 .console-frame:fullscreen .texto-vitoria { font-size: 32px; max-width: 640px; }
+
+/* ════════════════════════════════════════════════════════════════ */
+/* ── FIXES GLOBAIS (modo foco + fullscreen) — vale para os 5 jogos ── */
+/* ════════════════════════════════════════════════════════════════ */
+
+/* 1) NENHUM botão direto nas telas estica até as bordas */
+.console-frame:fullscreen .tela > button,
+body.modo-foco .tela > button {
+    width: auto;
+    align-self: center;
+    max-width: 420px;
+}
+
+/* 2) Botões compactos com texto perfeitamente centralizado */
+.console-frame:fullscreen .btn-start,
+body.modo-foco .btn-start {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1;
+    font-size: 30px;
+    padding: 18px 44px;
+}
+.console-frame:fullscreen .btn-verificar,
+body.modo-foco .btn-verificar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1;
+    font-size: 26px;
+    padding: 16px 40px;
+}
+
+/* 3) Botões de escolha (Genius: narração sim/não) e opções grandes */
+.console-frame:fullscreen .btn-escolha,
+body.modo-foco .btn-escolha,
+.console-frame:fullscreen .btn-opcao,
+body.modo-foco .btn-opcao {
+    width: auto;
+    align-self: center;
+    font-size: 24px;
+    padding: 16px 30px;
+}
+
+/* 4) Aviso ao Tutor: caixa do tamanho do conteúdo, texto centralizado */
+.console-frame:fullscreen .guia-rapido-tutor,
+body.modo-foco .guia-rapido-tutor {
+    width: auto;
+    align-self: center;
+    max-width: 760px;
+}
+.console-frame:fullscreen .guia-rapido-tutor p,
+body.modo-foco .guia-rapido-tutor p {
+    text-align: center;
+}
+
+/* 5) Títulos e info de fase centralizados */
+.console-frame:fullscreen .logo-container,
+body.modo-foco .logo-container,
+.console-frame:fullscreen .fase-info,
+body.modo-foco .fase-info,
+.console-frame:fullscreen .escolha-container,
+body.modo-foco .escolha-container {
+    align-self: center;
+}
