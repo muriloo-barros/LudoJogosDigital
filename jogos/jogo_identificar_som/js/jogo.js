@@ -4,40 +4,40 @@ const bancoDeRodadas = [
         tema: "ANIMAIS",
         opcoes: [
             { nome: "Gatinho", som: "sons/gato.mp3", img: "imgs/gato.png" },
-            { nome: "Cachorrinho", som: "sons/cachorro.mp3", img: "imgs/gato.png" },
-            { nome: "Leãozinho", som: "sons/leao.mp3", img: "imgs/gato.png" }
+            { nome: "Cachorrinho", som: "sons/cachorro.mp3", img: "imgs/cachorro.png" },
+            { nome: "Leãozinho", som: "sons/leao.mp3", img: "imgs/leao.png" }
         ]
     },
     {
         tema: "TRANSPORTES",
         opcoes: [
-            { nome: "Carro", som: "sons/carro.mp3", img: "imgs/gato.png" },
-            { nome: "Avião", som: "sons/aviao.mp3", img: "imgs/gato.png" },
-            { nome: "Trem", som: "sons/trem.mp3", img: "imgs/gato.png" }
+            { nome: "Carro", som: "sons/carro.mp3", img: "imgs/carro.png" },
+            { nome: "Avião", som: "sons/aviao.mp3", img: "imgs/aviao.png" },
+            { nome: "Trem", som: "sons/trem.mp3", img: "imgs/trem.png" }
         ]
     },
     {
         tema: "INSTRUMENTOS",
         opcoes: [
-            { nome: "Tambor", som: "sons/tambor.wav", img: "imgs/gato.png" },
-            { nome: "Piano", som: "sons/piano.wav", img: "imgs/gato.png" },
-            { nome: "Flauta", som: "sons/flauta.wav", img: "imgs/gato.png" }
+            { nome: "Tambor", som: "sons/tambor.wav", img: "imgs/tambor.png" },
+            { nome: "Piano", som: "sons/piano.wav", img: "imgs/piano.png" },
+            { nome: "Flauta", som: "sons/flauta.wav", img: "imgs/flauta.png" }
         ]
     },
     {
         tema: "NATUREZA",
         opcoes: [
-            { nome: "Chuva", som: "sons/chuva.wav", img: "imgs/gato.png" },
-            { nome: "Vento", som: "sons/vento.wav", img: "imgs/gato.png" },
-            { nome: "Mar", som: "sons/mar.wav", img: "imgs/gato.png" }
+            { nome: "Chuva", som: "sons/chuva.wav", img: "imgs/nuuvem.png" },
+            { nome: "Vento", som: "sons/vento.wav", img: "imgs/vento.png" },
+            { nome: "Mar", som: "sons/mar.wav", img: "imgs/agua.png" }
         ]
     },
     {
         tema: "COISAS DE CASA",
         opcoes: [
-            { nome: "Telefone", som: "sons/telefone.wav", img: "imgs/gato.png" },
-            { nome: "Despertador", som: "sons/despertador.wav", img: "imgs/gato.png" },
-            { nome: "Campainha", som: "sons/campainha.mp3", img: "imgs/gato.png" }
+            { nome: "Telefone", som: "sons/telefone.wav", img: "imgs/Telefone.png" },
+            { nome: "Despertador", som: "sons/despertador.wav", img: "imgs/Despertador.png" },
+            { nome: "Campainha", som: "sons/campainha.mp3", img: "imgs/Campainha.png" }
         ]
     }
 ];

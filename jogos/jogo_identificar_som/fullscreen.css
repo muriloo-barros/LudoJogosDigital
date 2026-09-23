@@ -333,3 +333,70 @@ body.modo-foco .fase-info,
 body.modo-foco .escolha-container {
     align-self: center;
 }
+
+/* ── SUPER OUVIDO: ampliação com os seletores CORRETOS deste jogo ── */
+body.modo-foco .card-opcao,
+.console-frame:fullscreen .card-opcao {
+    padding: 30px 18px;
+    min-height: 220px;
+}
+body.modo-foco .card-opcao img,
+.console-frame:fullscreen .card-opcao img {
+    width: 150px;
+    height: 150px;
+}
+body.modo-foco .card-opcao .label-opcao,
+.console-frame:fullscreen .card-opcao .label-opcao {
+    font-size: 28px;
+}
+body.modo-foco .btn-console-blue,
+.console-frame:fullscreen .btn-console-blue {
+    font-size: 32px;
+    padding: 22px;
+    max-width: 560px;
+}
+body.modo-foco .opcoes-grid,
+.console-frame:fullscreen .opcoes-grid {
+    gap: 26px;
+    max-width: 700px;
+}
+body.modo-foco .balao-voz,
+.console-frame:fullscreen .balao-voz {
+    font-size: 32px;
+}
+/* Título deste jogo já é 80px — não deixar dobrar no fullscreen */
+body.modo-foco .titulo-jogo,
+.console-frame:fullscreen .titulo-jogo {
+    font-size: 72px;
+}
+body.modo-foco .titulo-jogo .destaque,
+.console-frame:fullscreen .titulo-jogo .destaque {
+    font-size: 78px;
+}
+
+body.modo-foco .opcoes-grid,
+.console-frame:fullscreen .opcoes-grid {
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+    gap: 28px;
+    max-width: 720px;
+}
+body.modo-foco .card-opcao,
+.console-frame:fullscreen .card-opcao {
+    padding: 32px 18px;
+    min-height: 240px;
+}
+body.modo-foco .card-opcao img,
+.console-frame:fullscreen .card-opcao img {
+    width: 160px;
+    height: 160px;
+}
+body.modo-foco .card-opcao .label-opcao,
+.console-frame:fullscreen .card-opcao .label-opcao {
+    font-size: 30px;
+}
+body.modo-foco .btn-console-blue,
+.console-frame:fullscreen .btn-console-blue {
+    font-size: 34px;
+    padding: 26px;
+    max-width: 620px;
+}
