@@ -1,0 +1,335 @@
+/* ════════════════════════════════════════════════════════════════ */
+/* MODO FOCO / FULLSCREEN — LudoGames                               */
+/* Compartilhado entre todos os jogos                               */
+/* ════════════════════════════════════════════════════════════════ */
+
+/* Console precisa de position pra ancorar os botões */
+.console-frame {
+    position: relative;
+}
+
+/* ── Backdrop escurecido (z 900: acima do header 100, abaixo da sidebar 1000) ── */
+.foco-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.78);
+    backdrop-filter: blur(3px);
+    z-index: 900;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+}
+
+body.modo-foco .foco-backdrop {
+    opacity: 1;
+    pointer-events: all;
+}
+
+body.modo-foco .jogo-main {
+    position: relative;
+    z-index: 950;
+}
+
+/* ── Console centralizado no modo foco (z 950: acima do backdrop, abaixo da sidebar) ── */
+body.modo-foco .console-frame {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 950;
+    max-width: 92vw;
+    max-height: 94vh;
+    overflow-y: auto;
+    box-shadow:
+        inset 0 0 0 4px #5C3317,
+        0 20px 60px rgba(0, 0, 0, 0.7);
+}
+
+/* Header e nuvens ficam ao fundo, cobertos pelo backdrop (só reforço) */
+body.modo-foco .header-wrap,
+body.modo-foco .ceu-decoracao {
+    z-index: var(--z-fundo);
+}
+
+/* ── Botões redondos de madeira (mesmo estilo da placa do header) ── */
+.btn-fullscreen {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 44px;
+    height: 44px;
+    background:
+        repeating-linear-gradient(90deg, rgba(50,25,10,0.2) 0px, rgba(50,25,10,0.2) 1px, transparent 1px, transparent 5px),
+        linear-gradient(145deg, #B06A35 0%, #8B4A1E 50%, #A15A28 100%);
+    border: 2px solid #4A2810;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 20;
+    box-shadow:
+        inset 0 2px 3px rgba(255,200,150,0.3),
+        inset 0 -2px 4px rgba(0,0,0,0.3),
+        0 3px 6px rgba(0,0,0,0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-fullscreen:hover {
+    transform: translateY(1px);
+    background:
+        repeating-linear-gradient(90deg, rgba(50,25,10,0.25) 0px, rgba(50,25,10,0.25) 1px, transparent 1px, transparent 5px),
+        linear-gradient(145deg, #9B5A2A 0%, #7A3F18 50%, #8E4F22 100%);
+    box-shadow:
+        inset 0 2px 4px rgba(0,0,0,0.35),
+        0 2px 4px rgba(0,0,0,0.2);
+}
+.btn-fullscreen svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.4));
+}
+
+/* Botão nativo fica ao lado do principal */
+.btn-fullscreen-nativo {
+    right: 66px;
+}
+.btn-fullscreen-nativo.escondido {
+    display: none;
+}
+
+/* ── Fullscreen NATIVO do navegador (o frame é o elemento fullscreen) ── */
+.console-frame:fullscreen {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    max-height: none;
+    min-height: 100vh;
+    border-radius: 0;
+    overflow-y: auto;
+    background-color: #2a1810;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+.console-frame:fullscreen .game-screen {
+    width: 100%;
+    max-width: 960px;
+    max-height: 100vh;
+    overflow-y: auto;
+}
+
+/* ── Alto contraste ─────────────────────────────────────────────── */
+body.alto-contraste .foco-backdrop {
+    background: rgba(0, 0, 0, 0.95);
+}
+body.alto-contraste .btn-fullscreen {
+    border-color: #FFFF00;
+}
+body.alto-contraste .btn-fullscreen svg {
+    fill: #FFFF00;
+}
+
+/* ── Sem animações ──────────────────────────────────────────────── */
+body.sem-animacoes .foco-backdrop,
+body.sem-animacoes .btn-fullscreen {
+    transition: none !important;
+}
+
+/* ── Responsivo ─────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+    .btn-fullscreen {
+        width: 38px;
+        height: 38px;
+        top: 10px;
+        right: 10px;
+    }
+    .btn-fullscreen svg {
+        width: 16px;
+        height: 16px;
+    }
+    .btn-fullscreen-nativo {
+        right: 54px;
+    }
+}
+
+/* ════════════════════════════════════════════════════════════════ */
+/* ── AMPLIAÇÃO DE CONTEÚDO (modo foco + fullscreen nativo) ─────── */
+/* ════════════════════════════════════════════════════════════════ */
+
+/* Escala base do texto do jogo */
+body.modo-foco .game-screen,
+.console-frame:fullscreen .game-screen {
+    font-size: 1.4em;
+}
+
+/* Títulos e subtítulos */
+body.modo-foco .titulo-jogo,
+.console-frame:fullscreen .titulo-jogo { font-size: 64px; }
+body.modo-foco .titulo-jogo .destaque,
+.console-frame:fullscreen .titulo-jogo .destaque { font-size: 72px; }
+body.modo-foco .subtitulo,
+.console-frame:fullscreen .subtitulo { font-size: 28px; }
+body.modo-foco .fase-titulo,
+.console-frame:fullscreen .fase-titulo { font-size: 48px; }
+body.modo-foco .fase-desc,
+body.modo-foco .fase-aviso,
+.console-frame:fullscreen .fase-desc,
+.console-frame:fullscreen .fase-aviso { font-size: 22px; }
+
+/* Guia do tutor */
+body.modo-foco .guia-rapido-tutor,
+.console-frame:fullscreen .guia-rapido-tutor { font-size: 22px; max-width: 760px; }
+
+/* Botões grandes (start, verificar, escolha) */
+body.modo-foco .btn-start,
+.console-frame:fullscreen .btn-start { font-size: 40px; padding: 28px 64px; }
+body.modo-foco .btn-verificar,
+.console-frame:fullscreen .btn-verificar { font-size: 34px; padding: 24px 56px; }
+body.modo-foco .btn-escolha,
+.console-frame:fullscreen .btn-escolha { font-size: 26px; padding: 20px 32px; }
+
+/* HUD */
+body.modo-foco .hud-item,
+.console-frame:fullscreen .hud-item { font-size: 26px; }
+body.modo-foco .hud-bar,
+.console-frame:fullscreen .hud-bar { padding: 16px 28px; }
+body.modo-foco .instrucao-jogo,
+.console-frame:fullscreen .instrucao-jogo { font-size: 26px; }
+
+/* ── Rotina Visual: cards e slots ───────────────────────────────── */
+body.modo-foco .card-rotina,
+.console-frame:fullscreen .card-rotina,
+body.modo-foco .slot-rotina,
+.console-frame:fullscreen .slot-rotina {
+    width: 185px;
+    min-height: 170px;
+    padding: 16px 12px;
+}
+body.modo-foco .card-rotina .card-emoji,
+.console-frame:fullscreen .card-rotina .card-emoji { font-size: 3.2em; }
+body.modo-foco .card-rotina .card-texto,
+.console-frame:fullscreen .card-rotina .card-texto { font-size: 19px; }
+body.modo-foco .card-rotina .card-img,
+.console-frame:fullscreen .card-rotina .card-img { width: 64px; height: 64px; }
+body.modo-foco .slot-rotina .slot-numero,
+.console-frame:fullscreen .slot-rotina .slot-numero { font-size: 20px; padding: 4px 18px; }
+body.modo-foco .slot-rotina .slot-placeholder,
+.console-frame:fullscreen .slot-rotina .slot-placeholder { font-size: 3em; }
+
+/* ── Labirinto Sonoro: preview, células e área de áudio ────────── */
+body.modo-foco .maze-preview,
+.console-frame:fullscreen .maze-preview { max-width: 560px; }
+body.modo-foco .audio-pulse,
+.console-frame:fullscreen .audio-pulse { font-size: 96px; }
+body.modo-foco .audio-texto,
+body.modo-foco .controles-lembrete,
+.console-frame:fullscreen .audio-texto,
+.console-frame:fullscreen .controles-lembrete { font-size: 26px; }
+body.modo-foco .proximidade-container,
+.console-frame:fullscreen .proximidade-container { max-width: 560px; }
+body.modo-foco .proximidade-label,
+.console-frame:fullscreen .proximidade-label { font-size: 20px; }
+body.modo-foco .proximidade-barra,
+.console-frame:fullscreen .proximidade-barra { height: 24px; }
+
+/* ── Organizador de Emoções: peças e alvos ─────────────────────── */
+body.modo-foco .peca-emocao,
+.console-frame:fullscreen .peca-emocao { width: 130px; height: 130px; font-size: 76px; }
+body.modo-foco .alvo,
+.console-frame:fullscreen .alvo { min-height: 160px; }
+body.modo-foco .alvo-nome,
+.console-frame:fullscreen .alvo-nome { font-size: 28px; }
+body.modo-foco .peca-encaixada,
+.console-frame:fullscreen .peca-encaixada { font-size: 90px; }
+body.modo-foco .balao-voz,
+.console-frame:fullscreen .balao-voz { font-size: 30px; }
+
+/* ── Genius: botões do grid ────────────────────────────────────── */
+body.modo-foco .botao-genius,
+.console-frame:fullscreen .botao-genius { min-width: 150px; min-height: 150px; }
+body.modo-foco .hud-status,
+.console-frame:fullscreen .hud-status { font-size: 26px; }
+
+/* ── Super Ouvido: opções grandes ──────────────────────────────── */
+body.modo-foco .btn-opcao,
+body.modo-foco .opcao-som,
+.console-frame:fullscreen .btn-opcao,
+.console-frame:fullscreen .opcao-som { font-size: 30px; }
+
+/* ── Tela final ────────────────────────────────────────────────── */
+body.modo-foco .titulo-vitoria,
+.console-frame:fullscreen .titulo-vitoria { font-size: 64px; }
+body.modo-foco .medalha-animada,
+.console-frame:fullscreen .medalha-animada { font-size: 140px; }
+body.modo-foco .texto-vitoria,
+.console-frame:fullscreen .texto-vitoria { font-size: 32px; max-width: 640px; }
+
+/* ════════════════════════════════════════════════════════════════ */
+/* ── FIXES GLOBAIS (modo foco + fullscreen) — vale para os 5 jogos ── */
+/* ════════════════════════════════════════════════════════════════ */
+
+/* 1) NENHUM botão direto nas telas estica até as bordas */
+.console-frame:fullscreen .tela > button,
+body.modo-foco .tela > button {
+    width: auto;
+    align-self: center;
+    max-width: 420px;
+}
+
+/* 2) Botões compactos com texto perfeitamente centralizado */
+.console-frame:fullscreen .btn-start,
+body.modo-foco .btn-start {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1;
+    font-size: 30px;
+    padding: 18px 44px;
+}
+.console-frame:fullscreen .btn-verificar,
+body.modo-foco .btn-verificar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1;
+    font-size: 26px;
+    padding: 16px 40px;
+}
+
+/* 3) Botões de escolha (Genius: narração sim/não) e opções grandes */
+.console-frame:fullscreen .btn-escolha,
+body.modo-foco .btn-escolha,
+.console-frame:fullscreen .btn-opcao,
+body.modo-foco .btn-opcao {
+    width: auto;
+    align-self: center;
+    font-size: 24px;
+    padding: 16px 30px;
+}
+
+/* 4) Aviso ao Tutor: caixa do tamanho do conteúdo, texto centralizado */
+.console-frame:fullscreen .guia-rapido-tutor,
+body.modo-foco .guia-rapido-tutor {
+    width: auto;
+    align-self: center;
+    max-width: 760px;
+}
+.console-frame:fullscreen .guia-rapido-tutor p,
+body.modo-foco .guia-rapido-tutor p {
+    text-align: center;
+}
+
+/* 5) Títulos e info de fase centralizados */
+.console-frame:fullscreen .logo-container,
+body.modo-foco .logo-container,
+.console-frame:fullscreen .fase-info,
+body.modo-foco .fase-info,
+.console-frame:fullscreen .escolha-container,
+body.modo-foco .escolha-container {
+    align-self: center;
+}
