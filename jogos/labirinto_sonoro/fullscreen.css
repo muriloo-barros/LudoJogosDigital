@@ -165,6 +165,17 @@ body.modo-foco .game-screen,
     font-size: 1.4em;
 }
 
+/* ── CORREÇÃO: cursor invisível no fullscreen nativo ──────────── */
+/* O cursor personalizado (mouse.png) vive no <body>, FORA do
+   console-frame — em fullscreen nativo ele deixa de ser renderizado.
+   Como o site esconde o cursor nativo (cursor: none), sobra tela
+   "sem mouse". Solução: restaurar o cursor nativo dentro do frame
+   em fullscreen (o custom já está invisível por definição). */
+.console-frame:fullscreen,
+.console-frame:fullscreen * {
+    cursor: auto !important;
+}
+
 /* Títulos e subtítulos */
 body.modo-foco .titulo-jogo,
 .console-frame:fullscreen .titulo-jogo { font-size: 64px; }
