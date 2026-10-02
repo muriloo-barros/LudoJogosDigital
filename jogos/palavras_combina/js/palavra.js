@@ -1,9 +1,9 @@
 // ════════════════════════════════════════════════════════════════
 // PALAVRA QUE COMBINA — Lógica do jogo
 // Associação sinal de Libras (alfabeto manual) ↔ palavra escrita
-// 4 níveis: Fácil, Médio (flash 2s), Difícil (flash 1s + mesma inicial),
-// Invertido (palavra → sinal). 5 rounds cada.
-// Imagens em imgs/libras/A.png ... F.png (fallback: letra gigante)
+// 4 níveis: Fácil (reconhecimento), Médio (flash 2s),
+// Difícil (memorização do par sinal ↔ palavra), Invertido (palavra → sinal)
+// 5 rounds cada. Imagens em imgs/libras/A.png ... F.png (fallback: letra)
 // ════════════════════════════════════════════════════════════════
 
 (function () {
@@ -34,9 +34,10 @@ LETRAS.forEach(function (l) { MAPA_LETRAS[l.letra] = l; });
 const NIVEIS = [
     { nome: 'Fácil',     rounds: 5, modo: 'normal', flash: 0,    distratores: 'diferentes' },
     { nome: 'Médio',     rounds: 5, modo: 'normal', flash: 2000, distratores: 'diferentes' },
-    { nome: 'Difícil',   rounds: 5, modo: 'normal', flash: 1000, distratores: 'mesma' },
+    { nome: 'Difícil',   rounds: 5, modo: 'normal', flash: 0,    distratores: 'mesma' },
     { nome: 'Invertido', rounds: 5, modo: 'invertido' }
 ];
+const TEMPO_PAR = 2500; // duração da fase de memorização do par (Difícil)
 
 // ─── Estado ──────────────────────────────────────────────────────
 let nivelAtual = 0;
@@ -86,6 +87,8 @@ function falarSeguro(texto, callback) {
         chamado = true;
         if (meuToken === tokenFala && typeof callback === 'function') callback();
     }
+    // ⏱️ Timeout de segurança: callback SEMPRE dispara, mesmo se a
+    // narração falhar, for interrompida ou não suportar callback.
     const tempoSeguranca = Math.max(1500, texto.length * 60 + 1000);
     setTimeout(disparar, tempoSeguranca);
     if (typeof falar === 'function') {
@@ -99,6 +102,7 @@ function falarSeguro(texto, callback) {
         if (typeof config !== 'undefined' && config.velocidade) utt.rate = config.velocidade;
         const startTime = Date.now();
         utt.onend = function () {
+            // Chrome bug: onend dispara antes da fala terminar de verdade
             const minMs = Math.max(800, texto.length * 55);
             const wait = Math.max(0, minMs - (Date.now() - startTime));
             setTimeout(disparar, wait);
@@ -167,6 +171,7 @@ function mostrarSinal(letra) {
         imgSinal.style.display = 'block';
         fallbackEl.classList.add('escondido');
     };
+    // Sem imagem ou com erro → letra gigante permanece (nada quebra)
     img.src = 'imgs/libras/' + letra + '.png';
 }
 function esconderSinal() {
@@ -225,10 +230,12 @@ function carregarRound() {
     hudNivel.textContent = 'NÍVEL: ' + nivel.nome;
     hudRound.textContent = 'ROUND: ' + (roundAtual + 1) + '/' + nivel.rounds;
 
+    palcoPalavra.classList.remove('correta');
+    palcoDica.classList.remove('palavra-par');
     opcoesArea.innerHTML = '';
 
     if (nivel.modo === 'invertido') {
-        // Palavra no palco → criança escolhe o sinal
+        // INVERTIDO: palavra no palco → criança escolhe o sinal
         opcoes = shuffle([
             { valor: alvo, correta: true },
             { valor: letraAleatoria([alvo]), correta: false },
@@ -236,7 +243,6 @@ function carregarRound() {
         ]);
         palcoPalavra.textContent = palavraAlvo;
         palcoPalavra.classList.remove('escondido');
-        palcoPalavra.classList.remove('correta');
         imgSinal.style.display = 'none';
         fallbackEl.classList.add('escondido');
         hudAlvo.textContent = 'SINAL: ' + palavraAlvo;
@@ -251,10 +257,10 @@ function carregarRound() {
         // Sinal no palco → criança escolhe a palavra
         let distratores = [];
         if (nivel.distratores === 'mesma') {
-            // as 3 palavras da MESMA letra — exige leitura de verdade
+            // DIFÍCIL: as 3 palavras da MESMA letra — exige a memorização do par
             distratores = BANCO[alvo].slice();
         } else {
-            // iniciais diferentes — reconhecimento da letra
+            // FÁCIL/MÉDIO: iniciais diferentes — reconhecimento da letra
             const l1 = letraAleatoria([alvo]);
             const l2 = letraAleatoria([alvo, l1]);
             distratores = [BANCO[l1][Math.floor(Math.random() * BANCO[l1].length)],
@@ -267,21 +273,35 @@ function carregarRound() {
 
         mostrarSinal(alvo);
         hudAlvo.textContent = 'SINAL: ' + alvo;
-        instrucao.textContent = '👀 Qual palavra combina com o sinal da letra ' + alvo + '?';
-        palcoDica.textContent = 'Clique na palavra que combina!';
-        const frase = 'Round ' + (roundAtual + 1) + '. Qual palavra combina com o sinal da letra ' + alvo + '?';
-        falarSeguro(frase);
-        mostrarLegenda(frase);
         renderOpcoes();
 
-        if (nivel.flash > 0) {
-            // O sinal pisca e some — depois libera o input
+        if (nivel.distratores === 'mesma') {
+            // DIFÍCIL: fase de memorização do par sinal ↔ palavra
+            instrucao.textContent = '👀 Memorize o par! O sinal e a palavra vão aparecer juntos...';
+            palcoDica.classList.add('palavra-par');
+            palcoDica.textContent = '✋ ' + alvo + ' = ' + palavraAlvo;
             flashTimer = setTimeout(function () {
+                palcoDica.classList.remove('palavra-par');
+                palcoDica.textContent = 'Clique na palavra que estava com o sinal!';
                 esconderSinal();
                 aceitandoInput = true;
-            }, nivel.flash);
+            }, TEMPO_PAR);
         } else {
-            aceitandoInput = true;
+            instrucao.textContent = '👀 Qual palavra combina com o sinal da letra ' + alvo + '?';
+            palcoDica.textContent = 'Clique na palavra que combina!';
+            const frase = 'Round ' + (roundAtual + 1) + '. Qual palavra combina com o sinal da letra ' + alvo + '?';
+            falarSeguro(frase);
+            mostrarLegenda(frase);
+
+            if (nivel.flash > 0) {
+                // MÉDIO: o sinal pisca e some — depois libera o input
+                flashTimer = setTimeout(function () {
+                    esconderSinal();
+                    aceitandoInput = true;
+                }, nivel.flash);
+            } else {
+                aceitandoInput = true;
+            }
         }
     }
 }
@@ -295,8 +315,10 @@ function acertar(btn) {
     somAcerto();
     mostrarMascote();
 
-    const frase = 'Isso! ' + (opcoesPalavras() ? 'A letra ' + alvo + ', de ' + palavraAlvo + '!' : 'Essa é a letra ' + alvo + ', de ' + palavraAlvo + '!');
-    instrucao.textContent = '🎉 Muito bem! ' + (opcoesPalavras() ? alvo + ' de ' + palavraAlvo + '!' : alvo + ' de ' + palavraAlvo + '!');
+    const frase = 'Isso! ' + (opcoesPalavras()
+        ? 'A letra ' + alvo + ', de ' + palavraAlvo + '!'
+        : 'Essa é a letra ' + alvo + ', de ' + palavraAlvo + '!');
+    instrucao.textContent = '🎉 Muito bem! ' + alvo + ' de ' + palavraAlvo + '!';
 
     if (roundAtual < NIVEIS[nivelAtual].rounds - 1) {
         roundAtual++;
@@ -322,11 +344,14 @@ function errar(btn) {
     });
     palcoPalavra.classList.add('correta');
 
-    // Reexibe o sinal (nos níveis com flash ele havia sumido)
+    // Reexibe o sinal (nos níveis com flash/memorização ele havia sumido)
     if (NIVEIS[nivelAtual].modo === 'normal') mostrarSinal(alvo);
 
-    const frase = 'Opa! A resposta certa é ' + (opcoesPalavras() ? 'a palavra ' + palavraAlvo : 'o sinal da letra ' + alvo) + '. Tente de novo!';
-    instrucao.textContent = '🔁 Era ' + (opcoesPalavras() ? 'a palavra ' + palavraAlvo + '!' : 'o sinal da letra ' + alvo + '! Tente de novo!');
+    const frase = 'Opa! A resposta certa é ' +
+        (opcoesPalavras() ? 'a palavra ' + palavraAlvo : 'o sinal da letra ' + alvo) +
+        '. Tente de novo!';
+    instrucao.textContent = '🔁 Era ' +
+        (opcoesPalavras() ? 'a palavra ' + palavraAlvo + '!' : 'o sinal da letra ' + alvo + '! Tente de novo!');
     falarSeguro(frase);
     mostrarLegenda(frase);
 }
