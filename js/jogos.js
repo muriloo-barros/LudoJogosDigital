@@ -175,128 +175,243 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ─── Carrossel ──────────────────────────────────────
 
-  /* ─────────────────────────────────────────────
-     Dados dos carrosséis
-     Adicione quantos objetos quiser neste array.
-     Cada objeto precisa de: title e items[].
-  ───────────────────────────────────────────── */
-  const CAROUSELS = [
-    {
-      title: "Jogos",
-      items: [
-        { title: "Aventura",  image: "imgs/logo.png" },
-        { title: "RPG fantasia",  image: "https://picsum.photos/seed/game2/600/400" },
-        { title: "Corrida futurista", image: "https://picsum.photos/seed/game3/600/400" },
-        { title: "Batalha espacial",  image: "https://picsum.photos/seed/game4/600/400" },
-      ],
-    },
-    {
-      title: "Filmes",
-      items: [
-        { title: "Drama intenso",      image: "https://picsum.photos/seed/movie1/600/400" },
-        { title: "Comédia leve",       image: "https://picsum.photos/seed/movie2/600/400" },
-        { title: "Ficção científica",  image: "https://picsum.photos/seed/movie3/600/400" },
-      ],
-    },
-    {
-      title: "Músicas",
-      items: [
-        { title: "Pop nacional",       image: "https://picsum.photos/seed/music1/600/400" },
-        { title: "Jazz clássico",      image: "https://picsum.photos/seed/music2/600/400" },
-        { title: "Rock alternativo",   image: "https://picsum.photos/seed/music3/600/400" },
-        { title: "Eletrônico",         image: "https://picsum.photos/seed/music4/600/400" },
-        { title: "Sertanejo",          image: "https://picsum.photos/seed/music5/600/400" },
-      ],
-    },
-  ];
- 
-  /* ─────────────────────────────────────────────
-     Cria e monta um carrossel no container dado
-  ───────────────────────────────────────────── */
-  function createCarousel({ title, items }, container) {
-    let current = 0;
- 
-    // Estrutura HTML
-    const wrapper = document.createElement("div");
-    wrapper.className = "carousel";
- 
-    const h2 = document.createElement("h2");
-    h2.className = "carousel-title";
-    h2.textContent = title;
- 
-    const row = document.createElement("div");
-    row.className = "carousel-row";
- 
-    const btnPrev = makeButton("Anterior", `<path d="M15 18l-6-6 6-6"/>`);
-    const track   = document.createElement("div");
-    track.className = "carousel-track";
-    const btnNext = makeButton("Próximo",  `<path d="M9 18l6-6-6-6"/>`);
- 
-    const dotsEl = document.createElement("div");
-    dotsEl.className = "carousel-dots";
- 
-    row.append(btnPrev, track, btnNext);
-    wrapper.append(h2, row, dotsEl);
-    container.appendChild(wrapper);
- 
-    // Cria cards e dots
-    items.forEach((item, i) => {
-      // Card
-      const card = document.createElement("div");
-      card.className = "carousel-card";
-      card.innerHTML = `
-        <img src="${item.image}" alt="${item.title}" draggable="false" />
-        <div class="overlay"></div>
-        <div class="card-title">${item.title}</div>
-      `;
-      track.appendChild(card);
- 
-      // Dot
-      const dot = document.createElement("div");
-      dot.className = "dot" + (i === 0 ? " active" : "");
-      dotsEl.appendChild(dot);
+  class Carousel {
+      constructor(element) {
+          this.element = element;
+          element.carouselInstance = this;
+          this.cards = Array.from(
+              element.querySelectorAll(
+                  ".carousel-card"
+              )
+          );
+          this.nextButton =
+              element.querySelector(".next");
+          this.prevButton =
+              element.querySelector(".prev");
+          /*
+           * Índice do card que está no centro
+           */
+          this.current = 0;
+          this.isAnimating = false;
+          this.render();
+          this.nextButton.addEventListener(
+              "click",
+              () => {
+                  this.next();
+              }
+          );
+          this.prevButton.addEventListener(
+              "click",
+              () => {
+                  this.prev();
+              }
+          );
+          
+      }
+      /* =====================================
+         RENDERIZA OS CARDS
+      ===================================== */
+      render() {
+
+    const total = this.cards.length;
+
+    const track =
+        this.element.querySelector(".carousel-track");
+
+    /* Largura real da track */
+
+    const trackWidth = track.offsetWidth;
+
+    /* Largura real do card */
+
+    const cardWidth =
+        this.cards[0].offsetWidth;
+
+    /* Espaçamento entre os cards */
+
+    const gap = 25;
+
+    /* Centro da track */
+
+    const center =
+        trackWidth / 2;
+
+    /* Distância entre os centros dos cards */
+
+    const sidePosition =
+        cardWidth + gap;
+
+
+    this.cards.forEach((card, index) => {
+
+        card.classList.remove(
+            "left",
+            "center",
+            "right",
+            "hidden-left",
+            "hidden-right"
+        );
+
+
+        /* Distância do card atual em relação ao card central */
+
+        let distance =
+            index - this.current;
+
+
+        /* Faz o carrossel ser infinito */
+
+        if (distance > total / 2) {
+
+            distance -= total;
+
+        }
+
+
+        if (distance < -total / 2) {
+
+            distance += total;
+
+        }
+
+
+        /* CARD CENTRAL */
+
+        if (distance === 0) {
+
+            card.classList.add("center");
+
+            card.style.left =
+                `${center}px`;
+
+        }
+
+
+        /* CARD DA ESQUERDA */
+
+        else if (distance === -1) {
+
+            card.classList.add("left");
+
+            card.style.left =
+                `${center - sidePosition}px`;
+
+        }
+
+
+        /* CARD DA DIREITA */
+
+        else if (distance === 1) {
+
+            card.classList.add("right");
+
+            card.style.left =
+                `${center + sidePosition}px`;
+
+        }
+
+
+        /* CARDS QUE ESTÃO ANTES */
+
+        else if (distance < 0) {
+
+            card.classList.add("hidden-left");
+
+            card.style.left =
+                `${center - sidePosition * 2}px`;
+
+        }
+
+
+        /* CARDS QUE ESTÃO DEPOIS */
+
+        else {
+
+            card.classList.add("hidden-right");
+
+            card.style.left =
+                `${center + sidePosition * 2}px`;
+
+        }
+
     });
- 
-    const cards = track.querySelectorAll(".carousel-card");
-    const dots  = dotsEl.querySelectorAll(".dot");
- 
-    // Posiciona os cards via translateX
-    function goTo(index) {
-      current = (index + items.length) % items.length;
-      cards.forEach((card, i) => {
-        card.style.transform = `translateX(${(i - current) * 100}%)`;
+}
+      /* =====================================
+         PRÓXIMO
+      ===================================== */
+      next() {
+          if (this.isAnimating)
+              return;
+          this.isAnimating = true;
+          this.current++;
+          /*
+           * Loop infinito
+           */
+          if (
+              this.current >=
+              this.cards.length
+          ) {
+              this.current = 0;
+          }
+          this.render();
+          setTimeout(
+              () => {
+                  this.isAnimating = false;
+              },
+              600
+          );
+      }
+      /* =====================================
+         ANTERIOR
+      ===================================== */
+      prev() {
+          if (this.isAnimating)
+              return;
+          this.isAnimating = true;
+          this.current--;
+          /*
+           * Loop infinito
+           */
+          if (
+              this.current < 0
+          ) {
+              this.current =
+                  this.cards.length - 1;
+          }
+          this.render();
+          setTimeout(
+              () => {
+                  this.isAnimating = false;
+              },
+              600
+          );
+      }
+  }
+  /* =========================================
+     INICIA TODOS OS CARROSSÉIS
+  ========================================= */
+  document
+      .querySelectorAll(".carousel")
+      .forEach(
+          carousel => {
+              new Carousel(
+                  carousel
+              );
+          }
+      );
+
+    window.addEventListener("resize", () => {
+  document
+      .querySelectorAll(".carousel")
+      .forEach(element => {
+          const carousel =
+              element.carouselInstance;
+          if (carousel) {
+              carousel.render();
+          }
       });
-      dots.forEach((dot, i) => dot.classList.toggle("active", i === current));
-      btnPrev.disabled = false;
-      btnNext.disabled = false;
-    }
- 
-    btnPrev.addEventListener("click", () => goTo(current - 1));
-    btnNext.addEventListener("click", () => goTo(current + 1));
- 
-    // Estado inicial
-    goTo(0);
-  }
- 
-  /* ─────────────────────────────────────────────
-     Utilitário: cria botão com ícone de seta
-  ───────────────────────────────────────────── */
-  function makeButton(label, pathD) {
-    const btn = document.createElement("button");
-    btn.className = "carousel-btn";
-    btn.setAttribute("aria-label", label);
-    btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      ${pathD}
-    </svg>`;
-    return btn;
-  }
- 
-  /* ─────────────────────────────────────────────
-     Monta todos os carrosséis
-  ───────────────────────────────────────────── */
-  const app = document.getElementById("app");
-  CAROUSELS.forEach((data) => createCarousel(data, app));
+
+});
 
 
   // ══════════════════════════════════════════════════════════════
