@@ -4,6 +4,7 @@
     --z-header:   100;
     --z-overlay:  1000;
     --z-topo:     9999;
+    --carousel-spacing: 300px;
 }
 
 /* ─── Reset ─────────────────────────────────────────────────────── */
@@ -640,14 +641,15 @@ body.cursor-padrao #cursor-personalizado {
     width: 100%;
     max-width: 1000px;
     margin: 0 auto 80px;
+    margin-bottom: var(--carousel-spacing);
 }
 
 
 .carousel-title {
     text-align: center;
     color: white;
-    font-size: 20px;
-    margin-bottom: 25px;
+    font-size: 24px;
+    margin-bottom: 75px;
 }
 
 
@@ -682,8 +684,8 @@ body.cursor-padrao #cursor-personalizado {
 .carousel-card {
     position: absolute;
 
-    width: 400px;
-    height: 400px;
+    width: 500px;
+    height: 500px;
 
     top: 50%;
     left: 50%;
@@ -855,12 +857,12 @@ body.cursor-padrao #cursor-personalizado {
 
 
 .carousel-button.prev {
-    left: -150px;
+    left: -300px;
 }
 
 
 .carousel-button.next {
-    right: -150px;
+    right: -300px;
 }
 
 
