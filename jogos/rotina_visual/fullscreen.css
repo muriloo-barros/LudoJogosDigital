@@ -344,3 +344,13 @@ body.modo-foco .fase-info,
 body.modo-foco .escolha-container {
     align-self: center;
 }
+
+/* ── FIX: seta nativa aparecendo junto do cursor personalizado ── */
+/* O mouse.png assume o cursor dentro do fullscreen. Se a pessoa
+    desativou o cursor personalizado no painel (cursor-padrao),
+   a seta nativa volta a funcionar normalmente. */
+body:not(.cursor-padrao) .console-frame:fullscreen,
+body:not(.cursor-padrao) .console-frame:fullscreen * {
+    cursor: none !important;
+}
+.console-frame:fullscreen::backdrop { cursor: none; }

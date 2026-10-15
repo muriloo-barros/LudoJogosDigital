@@ -84,9 +84,23 @@ function init() {
     });
 
     // Sincroniza ícone quando o usuário sai do nativo pelo Esc do navegador
-    document.addEventListener('fullscreenchange', function () {
-        btnNativo.innerHTML = document.fullscreenElement ? SVG_SAIR : SVG_NATIVO;
-    });
+document.addEventListener('fullscreenchange', function () {
+    btnNativo.innerHTML = document.fullscreenElement ? SVG_SAIR : SVG_NATIVO;
+
+    // FIX: o cursor personalizado mora no <body> — em fullscreen nativo
+    // ele deixa de ser renderizado (só o console-frame e seus filhos
+    // aparecem). Movemos para DENTRO do elemento em fullscreen e
+    // devolvemos ao body ao sair. position:fixed segue funcionando,
+    // pois o site.js atualiza a posição pelo mousemove do document.
+    var cursor = document.getElementById('cursor-personalizado');
+    if (cursor) {
+        if (document.fullscreenElement) {
+            document.fullscreenElement.appendChild(cursor);
+        } else {
+            document.body.appendChild(cursor);
+        }
+    }
+});
 
     // Esc sai do modo foco (o Esc do fullscreen nativo o navegador já trata)
     document.addEventListener('keydown', function (e) {

@@ -14,8 +14,8 @@ const rotinas = [
         passos: [
             { emoji: "☀️", texto: "Acordar",           img: "" },
             { emoji: "🛏️", texto: "Arrumar a cama",    img: "" },
-            { emoji: "🪥", texto: "Escovar dentes",     img: "" },
             { emoji: "🍳", texto: "Tomar café",         img: "" },
+            { emoji: "🪥", texto: "Escovar dentes",     img: "" },
             { emoji: "🎒", texto: "Preparar mochila",   img: "" }
         ]
     },
@@ -355,6 +355,7 @@ function verificar() {
         btnProxima.classList.remove('escondido');
         btnProxima.textContent = (rodadaAtual < rotinas.length - 1)
             ? 'Próxima Rodada →' : 'Ver Resultado Final →';
+        btnProxima.focus(); // FIX: depois de verificar, Enter já avança a fase
     });
     mostrarLegenda(frase);
 }
@@ -432,7 +433,7 @@ function onPointerDown(e) {
     ghost.style.opacity = '0.85';
     ghost.style.transform = 'scale(1.05) rotate(2deg)';
     ghost.style.transition = 'none';
-    document.body.appendChild(ghost);
+    (document.fullscreenElement || document.body).appendChild(ghost);
     el.classList.add('arrastando');
 
     dragData = {
@@ -449,31 +450,73 @@ function onPointerDown(e) {
 
 function onPointerDownSlot(e, slotIdx) {
     if (verificou || !slots[slotIdx]) return;
-    e.preventDefault(); e.stopPropagation();
-    const card = slots[slotIdx];
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Encontra o primeiro espaço vago no banco (pra onde o card vai)
     let nullIdx = -1;
     for (let i = 0; i < cardsEmbaralhados.length; i++) {
         if (cardsEmbaralhados[i] === null) { nullIdx = i; break; }
     }
-    if (nullIdx >= 0) {
-        cardsEmbaralhados[nullIdx] = card;
-        slots[slotIdx] = null;
-    }
-    renderBanco(); renderSlots();
-    setTimeout(() => {
-        const newEl = bancoCards.querySelector(`[data-idx="${nullIdx}"]`);
-        if (newEl) {
-            onPointerDown({
-                currentTarget: newEl, clientX: e.clientX, clientY: e.clientY,
-                preventDefault: () => {}, stopPropagation: () => {}
-            });
-        }
-    }, 10);
+    if (nullIdx < 0) return;
+
+    // Move o card do slot para o banco (igual antes)
+    const card = slots[slotIdx];
+    cardsEmbaralhados[nullIdx] = card;
+    slots[slotIdx] = null;
+    renderBanco();
+    renderSlots();
+
+    const newEl = bancoCards.querySelector('[data-idx="' + nullIdx + '"]');
+    if (!newEl) return;
+
+    // FIX: o fantasma nasce CENTRADO NO PONTEIRO, não na posição do banco.
+    // Antes ele usava o rect do card no banco — o que fazia o "cursor"
+    // de arrasto teleportar pra linha das atividades.
+    const rect = newEl.getBoundingClientRect();
+    const ghost = newEl.cloneNode(true);
+    ghost.style.position = 'fixed';
+    ghost.style.left = (e.clientX - rect.width / 2) + 'px';
+    ghost.style.top = (e.clientY - rect.height / 2) + 'px';
+    ghost.style.width = rect.width + 'px';
+    ghost.style.height = rect.height + 'px';
+    ghost.style.zIndex = '9999';
+    ghost.style.pointerEvents = 'none';
+    ghost.style.opacity = '0.85';
+    ghost.style.transform = 'scale(1.05) rotate(2deg)';
+    ghost.style.transition = 'none';
+    document.body.appendChild(ghost);
+    newEl.classList.add('arrastando');
+
+    dragData = {
+        cardIdx: nullIdx,
+        elGhost: ghost,
+        offsetX: rect.width / 2,
+        offsetY: rect.height / 2,
+        origEl: newEl
+    };
+
+    somPick();
+    document.addEventListener('pointermove', onPointerMove);
+    document.addEventListener('pointerup', onPointerUp);
+    document.addEventListener('pointercancel', onPointerUp);
 }
 
 function onPointerMove(e) {
     if (!dragData) return;
     e.preventDefault();
+    if (!dragData) return;
+    e.preventDefault();
+
+    // FIX: o preventDefault do pointermove suprime os mousemove de
+    // compatibilidade — o cursor personalizado do site.js (que segue
+    // mousemove) congelava durante o arrasto. Sincronizamos manualmente.
+    var cursor = document.getElementById('cursor-personalizado');
+    if (cursor) {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+    }
+
     dragData.elGhost.style.left = (e.clientX - dragData.offsetX) + 'px';
     dragData.elGhost.style.top = (e.clientY - dragData.offsetY) + 'px';
     dragData.elGhost.style.display = 'none';
@@ -554,19 +597,41 @@ function onKeydown(e) {
     switch (e.key) {
         case 'ArrowRight':
             e.preventDefault();
-            novaPos = Math.min(posicaoFoco + 1, linha === 0 ? 4 : 9);
+            if (linha === 0) {
+                // FIX (fantasma): pula posições cujo card já foi colocado (null)
+                for (let p = posicaoFoco + 1; p <= 4; p++) {
+                    if (cardsEmbaralhados[p]) { novaPos = p; break; }
+                }
+            } else {
+                novaPos = Math.min(posicaoFoco + 1, 9);
+            }
             break;
         case 'ArrowLeft':
             e.preventDefault();
-            novaPos = Math.max(posicaoFoco - 1, linha === 0 ? 0 : 5);
+            if (linha === 0) {
+                for (let p = posicaoFoco - 1; p >= 0; p--) {
+                    if (cardsEmbaralhados[p]) { novaPos = p; break; }
+                }
+            } else {
+                novaPos = Math.max(posicaoFoco - 1, 5);
+            }
             break;
         case 'ArrowDown':
             e.preventDefault();
-            if (linha === 0) novaPos = 5 + coluna;
+            if (linha === 0) {
+                novaPos = 5 + coluna;
+            } else if (linha === 1 && !verificou && slots.every(s => s !== null)) {
+                // FIX (Verificar): com os 5 slots preenchidos, ↓ leva ao botão
+                btnVerificar.focus();
+                return;
+            }
             break;
         case 'ArrowUp':
             e.preventDefault();
-            if (linha === 1) novaPos = coluna;
+            // FIX (fantasma): só sobe se existir card de verdade nessa coluna
+            if (linha === 1 && cardsEmbaralhados[coluna]) {
+                novaPos = coluna;
+            }
             break;
         case 'Enter':
         case ' ':
@@ -598,6 +663,17 @@ function acaoPosicao(pos) {
 }
 
 function atualizarFocoVisual() {
+    // FIX (fantasma): se o foco caiu numa posição do banco cujo card já
+    // foi colocado num slot (null), migra pro card válido mais próximo.
+    if (posicaoFoco < 5 && !cardsEmbaralhados[posicaoFoco]) {
+        let alternativa = -1;
+        for (let d = 1; d < 5 && alternativa === -1; d++) {
+            if (posicaoFoco - d >= 0 && cardsEmbaralhados[posicaoFoco - d]) alternativa = posicaoFoco - d;
+            else if (posicaoFoco + d < 5 && cardsEmbaralhados[posicaoFoco + d]) alternativa = posicaoFoco + d;
+        }
+        posicaoFoco = (alternativa !== -1) ? alternativa : 5; // banco vazio → 1º slot
+    }
+
     document.querySelectorAll('.card-rotina.focado, .slot-rotina.focado')
         .forEach(el => el.classList.remove('focado'));
     if (posicaoFoco < 5) {
@@ -651,6 +727,24 @@ btnStart.addEventListener('click', function() {
     pontuacaoTotal = 0;
     carregarRodada();
     setTimeout(() => tabuleiroJogo.focus(), 100);
+});
+
+// FIX (Verificar): voltar dos botões pro tabuleiro com as setas
+btnVerificar.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        tabuleiroJogo.focus();
+        atualizarFocoVisual();
+        anunciarPosicao();
+    }
+});
+btnProxima.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        tabuleiroJogo.focus();
+        atualizarFocoVisual();
+        anunciarPosicao();
+    }
 });
 
 btnVerificar.addEventListener('click', verificar);

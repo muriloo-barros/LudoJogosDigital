@@ -541,3 +541,34 @@ body.sem-animacoes .btn-start,
 body.sem-animacoes .btn-verificar { transition: none !important; }
 body.sem-animacoes .medalha-animada { animation: none !important; }
 body.sem-animacoes .card-rotina.errado { animation: none !important; }
+
+/* ── FIX fullscreen: a caixa cresce, as cards ficam no tamanho natural ── */
+.console-frame:fullscreen {
+    width: min(96vw, 1500px);   /* ocupa quase a tela toda (teto de 1500px) */
+    max-width: 96vw;
+    min-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.console-frame:fullscreen .game-screen {
+    min-height: auto;
+    flex-grow: 1;
+    justify-content: center;
+}
+.console-frame:fullscreen .banco-cards,
+.console-frame:fullscreen .slot-linha {
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 100%;
+    margin-inline: auto;
+    gap: clamp(10px, 1.5vw, 28px);
+}
+/* Cards e slots mantêm o tamanho natural; encolhem SÓ se
+   realmente não couber (teto de 1500px cobre quase sempre) */
+.console-frame:fullscreen .banco-cards .card-rotina,
+.console-frame:fullscreen .slot-linha .slot-rotina {
+    flex: 0 1 auto;
+    min-width: 0;
+}
