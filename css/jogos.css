@@ -794,7 +794,7 @@ body.cursor-padrao #cursor-personalizado {
 
     text-align: center;
 
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 500;
 
     background: linear-gradient(
@@ -811,35 +811,22 @@ body.cursor-padrao #cursor-personalizado {
 
 .carousel-button {
     position: absolute;
-
     top: 50%;
-
     transform: translateY(-50%);
-
-    width: 40px;
-    height: 40px;
-
+    width: 44px;
+    height: 44px;
     border: none;
-
     border-radius: 50%;
-
-    background: white;
-
+    background: #A15A40;
     color: #222;
-
     font-size: 27px;
-
-    cursor: pointer;
-
-    z-index: 20;
-
+    z-index: var(--z-conteudo);
     display: flex;
     align-items: center;
     justify-content: center;
-
-    box-shadow:
-        0 3px 10px rgba(0, 0, 0, 0.20);
-
+    border: 2px solid #242424;
+    margin-right: 12px;
+    box-shadow: inset -1.5px -2px 5px rgba(0, 0, 0, 0.6);
     transition:
         transform 0.2s ease,
         box-shadow 0.2s ease;
@@ -850,9 +837,14 @@ body.cursor-padrao #cursor-personalizado {
     transform:
         translateY(-50%)
         scale(1.1);
+    box-shadow: inset -1.5px -2px 5px rgba(0, 0, 0, 0.6);
+}
 
-    box-shadow:
-        0 5px 15px rgba(0, 0, 0, 0.30);
+.carousel-button svg {
+  fill: #fff;
+  width: 23px;
+  height: 23px;
+
 }
 
 
@@ -860,9 +852,13 @@ body.cursor-padrao #cursor-personalizado {
     left: -300px;
 }
 
+.carousel-button.prev svg {
+  transform: rotate(180deg);
+}
+
 
 .carousel-button.next {
-    right: -300px;
+    right: -310px;
 }
 
 
