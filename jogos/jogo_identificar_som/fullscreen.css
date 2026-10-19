@@ -299,7 +299,7 @@ body.modo-foco .btn-start {
     text-align: center;
     line-height: 1;
     font-size: 30px;
-    padding: 18px 44px;
+    padding: 20px 400px;
 }
 .console-frame:fullscreen .btn-verificar,
 body.modo-foco .btn-verificar {
@@ -309,7 +309,7 @@ body.modo-foco .btn-verificar {
     text-align: center;
     line-height: 1;
     font-size: 26px;
-    padding: 16px 40px;
+    padding: 20px 400px;
 }
 
 /* 3) Botões de escolha (Genius: narração sim/não) e opções grandes */
@@ -410,4 +410,15 @@ body.modo-foco .btn-console-blue,
     font-size: 34px;
     padding: 26px;
     max-width: 620px;
+}
+
+.console-frame:fullscreen {
+    background-image: url("imgs/caixa_jogos_full.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.console-frame:fullscreen::backdrop {
+    background: #2b1a0e; /* tom madeira escura — troque à vontade */
 }
