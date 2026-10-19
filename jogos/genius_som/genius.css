@@ -964,7 +964,7 @@ body.cursor-padrao #cursor-personalizado {
   background-color: #05c46b;
   color: white;
   font-size: 30px;
-  padding: 20px;
+  padding: 20px 300px;
   border: none;
   border-radius: 18px;
   cursor: pointer;

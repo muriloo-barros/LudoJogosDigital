@@ -309,7 +309,7 @@ body.modo-foco .btn-verificar {
     align-self: center;
     text-align: center;
     font-size: 26px;
-    padding: 16px 40px;
+    padding: 20px 400px;
 }
 
 /* Caixa do aviso ao tutor: do tamanho do conteúdo, centralizada */
@@ -371,7 +371,7 @@ body.modo-foco .btn-start {
     text-align: center;
     line-height: 1;
     font-size: 30px;
-    padding: 18px 44px;
+    padding: 20px 400px;
 }
 .console-frame:fullscreen .btn-verificar,
 body.modo-foco .btn-verificar {
@@ -381,7 +381,7 @@ body.modo-foco .btn-verificar {
     text-align: center;
     line-height: 1;
     font-size: 26px;
-    padding: 16px 40px;
+    padding: 20px 400px;
 }
 
 /* 3) Botões de escolha (Genius: narração sim/não) e opções grandes */
@@ -415,4 +415,15 @@ body.modo-foco .fase-info,
 .console-frame:fullscreen .escolha-container,
 body.modo-foco .escolha-container {
     align-self: center;
+}
+
+.console-frame:fullscreen {
+    background-image: url("imgs/caixa_jogos_full.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.console-frame:fullscreen::backdrop {
+    background: #2b1a0e; /* tom madeira escura — troque à vontade */
 }

@@ -18,16 +18,16 @@ const bancoDeRodadas = [
     {
         emocoes: [
             { nome: "Medo",       emoji: "😨", img: "imgs/emoji_medo.png" },
-            { nome: "Surpresa",   emoji: "😲", img: "" },
+            { nome: "Surpresa",   emoji: "😲", img: "imgs/emoji_animacao.png" },
             { nome: "Nojo",       emoji: "🤢", img: "imgs/emoji_nojo.png" },
-            { nome: "Calma",      emoji: "😌", img: "" }
+            { nome: "Calma",      emoji: "😌", img: "imgs/emoji_orgulho.png" }
         ]
     },
     {
         emocoes: [
-            { nome: "Vergonha",   emoji: "😳", img: "" },
+            { nome: "Vergonha",   emoji: "😳", img: "imgs/emoji_vergonha.png" },
             { nome: "Orgulho",    emoji: "😌", img: "imgs/emoji_orgulho.png" },
-            { nome: "Cansaço",    emoji: "😴", img: "" },
+            { nome: "Cansaço",    emoji: "😴", img: "imgs/emoji_cansaco.png" },
             { nome: "Animação",   emoji: "🤩", img: "imgs/emoji_animacao.png" }
         ]
     }
