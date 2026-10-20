@@ -331,9 +331,45 @@ body.sem-animacoes .btn-fullscreen {
 /* ── REGRAS ESPECÍFICAS DE CADA JOGO (opcionais) ───────────────── */
 /* ════════════════════════════════════════════════════════════════ */
 /* Se algum jogo tiver elementos próprios que precisam escalar no
-   modo foco/fullscreen (ex.: .peca-emocao no Organizador de
-   Emoções, classes do Labirinto), cole aqui a regra do arquivo
-   antigo daquele jogo, sempre no padrão:
-     body.modo-foco .classe-do-jogo,
-     .console-frame:fullscreen .classe-do-jogo { ... }
+modo foco/fullscreen (ex.: .peca-emocao no Organizador de
+Emoções, classes do Labirinto), cole aqui a regra do arquivo
+antigo daquele jogo, sempre no padrão:
+    body.modo-foco .classe-do-jogo,
+    .console-frame:fullscreen .classe-do-jogo { ... }
 */
+
+/* ════════════════════════════════════════════════════════════════ */
+/* ── APÊNDICE GENIUS ───────────────────────────────────────────── */
+/* O Genius pinta a caixa no .game-screen (não no console-frame),   */
+/* então as regras da caixa exclusiva são redirecionadas.          */
+/* ════════════════════════════════════════════════════════════════ */
+
+/* 1) MODO FOCO: some com o fundo do site (céu, nuvens, header) —
+      o backdrop escuro fica limpo, só o console em destaque */
+body.modo-foco .header-wrap,
+body.modo-foco .grad-layer,
+body.modo-foco .nuvem,
+body.modo-foco .nuvem2,
+body.modo-foco .nuvem3,
+body.modo-foco .ceu-decoracao {
+    display: none !important;
+}
+
+/* 2) O console-frame NÃO pinta caixa nenhuma (mata a caixa duplicada) */
+body.modo-foco .console-frame,
+.console-frame:fullscreen,
+.console-frame:-webkit-full-screen,
+html.em-fullscreen .console-frame {
+    background-image: none;
+}
+
+/* 3) A caixa exclusiva vai no .game-screen, onde a caixa original vive */
+body.modo-foco .game-screen,
+.console-frame:fullscreen .game-screen,
+.console-frame:-webkit-full-screen .game-screen,
+html.em-fullscreen .console-frame .game-screen {
+    background-image: url("imgs/caixa_jogos_full.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}

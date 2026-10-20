@@ -1178,7 +1178,12 @@ body.sem-animacoes .botao-genius.aceso {
   .logo img { width: 160px; }
 
   .console-frame { padding: 14px; border-radius: 28px; }
-  .game-screen { padding: 16px; min-height: 640px; }
+  .game-screen { 
+    background-image: url("imgs/caixa_jogos.png");
+    background-size: cover;
+    padding: 16px; 
+    min-height: 640px; 
+  }
 
   .titulo-jogo { font-size: 32px; }
   .titulo-jogo .destaque { font-size: 36px; }
