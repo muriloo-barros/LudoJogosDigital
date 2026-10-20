@@ -312,7 +312,7 @@ function ativarArraste(peca) {
         peca.style.left = rect.left + "px";
         peca.style.top = rect.top + "px";
 
-        document.body.appendChild(peca);
+        (document.fullscreenElement || document.body).appendChild(peca);
         peca.classList.add("arrastando");
         peca.setPointerCapture(evento.pointerId);
 

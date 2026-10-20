@@ -1,14 +1,17 @@
 /* ════════════════════════════════════════════════════════════════ */
-/* MODO FOCO / FULLSCREEN — LudoGames                               */
-/* Compartilhado entre todos os jogos                               */
+/* FULLSCREEN UNIVERSAL — LudoGames                                  */
+/* UM ÚNICO ARQUIVO para TODOS os jogos (substitui as versões antigas)*/
+/* Requisito: imgs/caixa_jogos_full.png na pasta imgs/ de cada jogo   */
 /* ════════════════════════════════════════════════════════════════ */
 
-/* Console precisa de position pra ancorar os botões */
+/* ── ÂNCORA DOS BOTÕES ──────────────────────────────────────────── */
+/* O console precisa de position pra ancorar os botões redondos */
 .console-frame {
     position: relative;
 }
 
-/* ── Backdrop escurecido (z 900: acima do header 100, abaixo da sidebar 1000) ── */
+/* ── Backdrop escurecido do modo foco ───────────────────────────── */
+/* z 900: acima do header (100), abaixo da sidebar (1000) */
 .foco-backdrop {
     position: fixed;
     inset: 0;
@@ -19,18 +22,17 @@
     pointer-events: none;
     transition: opacity 0.35s ease;
 }
-
 body.modo-foco .foco-backdrop {
     opacity: 1;
     pointer-events: all;
 }
 
+/* ── Console centralizado no modo foco ──────────────────────────── */
+/* z 950: acima do backdrop, abaixo da sidebar */
 body.modo-foco .jogo-main {
     position: relative;
     z-index: 950;
 }
-
-/* ── Console centralizado no modo foco (z 950: acima do backdrop, abaixo da sidebar) ── */
 body.modo-foco .console-frame {
     position: fixed;
     top: 50%;
@@ -44,7 +46,6 @@ body.modo-foco .console-frame {
         inset 0 0 0 4px #5C3317,
         0 20px 60px rgba(0, 0, 0, 0.7);
 }
-
 /* Header e nuvens ficam ao fundo, cobertos pelo backdrop (só reforço) */
 body.modo-foco .header-wrap,
 body.modo-foco .ceu-decoracao {
@@ -99,7 +100,8 @@ body.modo-foco .ceu-decoracao {
 }
 
 /* ── Fullscreen NATIVO do navegador (o frame é o elemento fullscreen) ── */
-.console-frame:fullscreen {
+.console-frame:fullscreen,
+.console-frame:-webkit-full-screen {
     width: 100vw;
     height: 100vh;
     max-width: none;
@@ -114,45 +116,64 @@ body.modo-foco .ceu-decoracao {
     justify-content: center;
     padding: 20px;
 }
-.console-frame:fullscreen .game-screen {
+.console-frame:fullscreen .game-screen,
+.console-frame:-webkit-full-screen .game-screen {
     width: 100%;
     max-width: 960px;
     max-height: 100vh;
     overflow-y: auto;
 }
 
-/* ── Alto contraste ─────────────────────────────────────────────── */
-body.alto-contraste .foco-backdrop {
-    background: rgba(0, 0, 0, 0.95);
+/* ════════════════════════════════════════════════════════════════ */
+/* ── CAIXA EXCLUSIVA (imgs/caixa_jogos_full.png) ───────────────── */
+/* ════════════════════════════════════════════════════════════════ */
+
+/* Caso 1: fullscreen no PRÓPRIO console-frame (como o JS faz) */
+.console-frame:fullscreen,
+.console-frame:-webkit-full-screen {
+    background-image: url("imgs/caixa_jogos_full.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
-body.alto-contraste .btn-fullscreen {
-    border-color: #FFFF00;
+/* Caso 2: fullscreen em qualquer ANCESTRAL da caixa (robustez) */
+:fullscreen .console-frame,
+:-webkit-full-screen .console-frame {
+    background-image: url("imgs/caixa_jogos_full.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
-body.alto-contraste .btn-fullscreen svg {
-    fill: #FFFF00;
+/* Caso 3: backup via classe JS (html.em-fullscreen) */
+html.em-fullscreen .console-frame {
+    background-image: url("imgs/caixa_jogos_full.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+/* MODO FOCO também usa a caixa exclusiva */
+body.modo-foco .console-frame {
+    background-image: url("imgs/caixa_jogos_full.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
-/* ── Sem animações ──────────────────────────────────────────────── */
-body.sem-animacoes .foco-backdrop,
-body.sem-animacoes .btn-fullscreen {
-    transition: none !important;
+/* ── Fundo ao redor da caixa (as "barras" fora dela) ────────────── */
+.console-frame:fullscreen::backdrop,
+.console-frame:-webkit-full-screen::backdrop {
+    background: #2b1a0e; /* tom madeira escura — troque à vontade */
 }
 
-/* ── Responsivo ─────────────────────────────────────────────────── */
-@media (max-width: 480px) {
-    .btn-fullscreen {
-        width: 38px;
-        height: 38px;
-        top: 10px;
-        right: 10px;
-    }
-    .btn-fullscreen svg {
-        width: 16px;
-        height: 16px;
-    }
-    .btn-fullscreen-nativo {
-        right: 54px;
-    }
+/* ── Seta nativa escondida no fullscreen (o mouse.png assume) ───── */
+/* Se o usuário desativar o cursor personalizado no painel
+   (body.cursor-padrao), a seta nativa volta a funcionar normalmente */
+body:not(.cursor-padrao) .console-frame:fullscreen,
+body:not(.cursor-padrao) .console-frame:fullscreen * {
+    cursor: none !important;
+}
+body:not(.cursor-padrao) .console-frame:fullscreen::backdrop {
+    cursor: none;
 }
 
 /* ════════════════════════════════════════════════════════════════ */
@@ -165,32 +186,11 @@ body.modo-foco .game-screen,
     font-size: 1.4em;
 }
 
-/* ── CORREÇÃO: cursor invisível no fullscreen nativo ──────────── */
-/* O cursor personalizado (mouse.png) vive no <body>, FORA do
-   console-frame — em fullscreen nativo ele deixa de ser renderizado.
-   Como o site esconde o cursor nativo (cursor: none), sobra tela
-   "sem mouse". Solução: restaurar o cursor nativo dentro do frame
-   em fullscreen (o custom já está invisível por definição). */
-.console-frame:fullscreen,
-.console-frame:fullscreen * {
-    cursor: auto !important;
-}
-
 /* Títulos e subtítulos */
 body.modo-foco .titulo-jogo,
 .console-frame:fullscreen .titulo-jogo { font-size: 64px; }
 body.modo-foco .titulo-jogo .destaque,
 .console-frame:fullscreen .titulo-jogo .destaque { font-size: 72px; }
-body.modo-foco .subtitulo,
-.console-frame:fullscreen .subtitulo { font-size: 28px; }
-body.modo-foco .fase-titulo,
-.console-frame:fullscreen .fase-titulo { font-size: 48px; }
-body.modo-foco .fase-desc,
-body.modo-foco .fase-aviso,
-.console-frame:fullscreen .fase-desc,
-.console-frame:fullscreen .fase-aviso { font-size: 22px; }
-
-/* Guia do tutor */
 body.modo-foco .guia-rapido-tutor,
 .console-frame:fullscreen .guia-rapido-tutor { font-size: 22px; max-width: 760px; }
 
@@ -210,76 +210,20 @@ body.modo-foco .hud-bar,
 body.modo-foco .instrucao-jogo,
 .console-frame:fullscreen .instrucao-jogo { font-size: 26px; }
 
-/* ── Rotina Visual: cards e slots ───────────────────────────────── */
-body.modo-foco .card-rotina,
-.console-frame:fullscreen .card-rotina,
-body.modo-foco .slot-rotina,
-.console-frame:fullscreen .slot-rotina {
-    width: 185px;
-    min-height: 170px;
-    padding: 16px 12px;
-}
-body.modo-foco .card-rotina .card-emoji,
-.console-frame:fullscreen .card-rotina .card-emoji { font-size: 3.2em; }
-body.modo-foco .card-rotina .card-texto,
-.console-frame:fullscreen .card-rotina .card-texto { font-size: 19px; }
-body.modo-foco .card-rotina .card-img,
-.console-frame:fullscreen .card-rotina .card-img { width: 64px; height: 64px; }
-body.modo-foco .slot-rotina .slot-numero,
-.console-frame:fullscreen .slot-rotina .slot-numero { font-size: 20px; padding: 4px 18px; }
-body.modo-foco .slot-rotina .slot-placeholder,
-.console-frame:fullscreen .slot-rotina .slot-placeholder { font-size: 3em; }
-
-/* ── Labirinto Sonoro: preview, células e área de áudio ────────── */
-body.modo-foco .maze-preview,
-.console-frame:fullscreen .maze-preview { max-width: 560px; }
-body.modo-foco .audio-pulse,
-.console-frame:fullscreen .audio-pulse { font-size: 96px; }
-body.modo-foco .audio-texto,
-body.modo-foco .controles-lembrete,
-.console-frame:fullscreen .audio-texto,
-.console-frame:fullscreen .controles-lembrete { font-size: 26px; }
-body.modo-foco .proximidade-container,
-.console-frame:fullscreen .proximidade-container { max-width: 560px; }
+/* Barra de proximidade (jogos que usam) */
 body.modo-foco .proximidade-label,
 .console-frame:fullscreen .proximidade-label { font-size: 20px; }
 body.modo-foco .proximidade-barra,
 .console-frame:fullscreen .proximidade-barra { height: 24px; }
 
-/* ── Organizador de Emoções: peças e alvos ─────────────────────── */
-body.modo-foco .peca-emocao,
-.console-frame:fullscreen .peca-emocao { width: 130px; height: 130px; font-size: 76px; }
-body.modo-foco .alvo,
-.console-frame:fullscreen .alvo { min-height: 160px; }
-body.modo-foco .alvo-nome,
-.console-frame:fullscreen .alvo-nome { font-size: 28px; }
-body.modo-foco .peca-encaixada,
-.console-frame:fullscreen .peca-encaixada { font-size: 90px; }
-body.modo-foco .balao-voz,
-.console-frame:fullscreen .balao-voz { font-size: 30px; }
-
-/* ── Genius: botões do grid ────────────────────────────────────── */
-body.modo-foco .botao-genius,
-.console-frame:fullscreen .botao-genius { min-width: 150px; min-height: 150px; }
-body.modo-foco .hud-status,
-.console-frame:fullscreen .hud-status { font-size: 26px; }
-
-/* ── Super Ouvido: opções grandes ──────────────────────────────── */
+/* Super Ouvido: opções grandes */
 body.modo-foco .btn-opcao,
 body.modo-foco .opcao-som,
 .console-frame:fullscreen .btn-opcao,
 .console-frame:fullscreen .opcao-som { font-size: 30px; }
 
-/* ── Tela final ────────────────────────────────────────────────── */
-body.modo-foco .titulo-vitoria,
-.console-frame:fullscreen .titulo-vitoria { font-size: 64px; }
-body.modo-foco .medalha-animada,
-.console-frame:fullscreen .medalha-animada { font-size: 140px; }
-body.modo-foco .texto-vitoria,
-.console-frame:fullscreen .texto-vitoria { font-size: 32px; max-width: 640px; }
-
 /* ════════════════════════════════════════════════════════════════ */
-/* ── FIXES GLOBAIS (modo foco + fullscreen) — vale para os 5 jogos ── */
+/* ── CORREÇÕES DE BOTÕES ESTICADOS ─────────────────────────────── */
 /* ════════════════════════════════════════════════════════════════ */
 
 /* 1) NENHUM botão direto nas telas estica até as bordas */
@@ -345,80 +289,51 @@ body.modo-foco .escolha-container {
     align-self: center;
 }
 
-/* ── SUPER OUVIDO: ampliação com os seletores CORRETOS deste jogo ── */
-body.modo-foco .card-opcao,
-.console-frame:fullscreen .card-opcao {
-    padding: 30px 18px;
-    min-height: 220px;
+/* ════════════════════════════════════════════════════════════════ */
+/* ── ACESSIBILIDADE ────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════ */
+
+/* Alto contraste */
+body.alto-contraste .foco-backdrop {
+    background: rgba(0, 0, 0, 0.95);
 }
-body.modo-foco .card-opcao img,
-.console-frame:fullscreen .card-opcao img {
-    width: 150px;
-    height: 150px;
+body.alto-contraste .btn-fullscreen {
+    border-color: #FFFF00;
 }
-body.modo-foco .card-opcao .label-opcao,
-.console-frame:fullscreen .card-opcao .label-opcao {
-    font-size: 28px;
-}
-body.modo-foco .btn-console-blue,
-.console-frame:fullscreen .btn-console-blue {
-    font-size: 32px;
-    padding: 22px;
-    max-width: 560px;
-}
-body.modo-foco .opcoes-grid,
-.console-frame:fullscreen .opcoes-grid {
-    gap: 26px;
-    max-width: 700px;
-}
-body.modo-foco .balao-voz,
-.console-frame:fullscreen .balao-voz {
-    font-size: 32px;
-}
-/* Título deste jogo já é 80px — não deixar dobrar no fullscreen */
-body.modo-foco .titulo-jogo,
-.console-frame:fullscreen .titulo-jogo {
-    font-size: 72px;
-}
-body.modo-foco .titulo-jogo .destaque,
-.console-frame:fullscreen .titulo-jogo .destaque {
-    font-size: 78px;
+body.alto-contraste .btn-fullscreen svg {
+    fill: #FFFF00;
 }
 
-body.modo-foco .opcoes-grid,
-.console-frame:fullscreen .opcoes-grid {
-    grid-template-columns: repeat(3, minmax(180px, 1fr));
-    gap: 28px;
-    max-width: 720px;
-}
-body.modo-foco .card-opcao,
-.console-frame:fullscreen .card-opcao {
-    padding: 32px 18px;
-    min-height: 240px;
-}
-body.modo-foco .card-opcao img,
-.console-frame:fullscreen .card-opcao img {
-    width: 160px;
-    height: 160px;
-}
-body.modo-foco .card-opcao .label-opcao,
-.console-frame:fullscreen .card-opcao .label-opcao {
-    font-size: 30px;
-}
-body.modo-foco .btn-console-blue,
-.console-frame:fullscreen .btn-console-blue {
-    font-size: 34px;
-    padding: 26px;
-    max-width: 620px;
+/* Sem animações */
+body.sem-animacoes .foco-backdrop,
+body.sem-animacoes .btn-fullscreen {
+    transition: none !important;
 }
 
-.console-frame:fullscreen {
-    background-image: url("imgs/caixa_jogos_full.png");
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-position: center;
+/* ── Responsivo ────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+    .btn-fullscreen {
+        width: 38px;
+        height: 38px;
+        top: 10px;
+        right: 10px;
+    }
+    .btn-fullscreen svg {
+        width: 16px;
+        height: 16px;
+    }
+    .btn-fullscreen-nativo {
+        right: 54px;
+    }
 }
 
-.console-frame:fullscreen::backdrop {
-    background: #2b1a0e; /* tom madeira escura — troque à vontade */
-}
+/* ════════════════════════════════════════════════════════════════ */
+/* ── REGRAS ESPECÍFICAS DE CADA JOGO (opcionais) ───────────────── */
+/* ════════════════════════════════════════════════════════════════ */
+/* Se algum jogo tiver elementos próprios que precisam escalar no
+   modo foco/fullscreen (ex.: .peca-emocao no Organizador de
+   Emoções, classes do Labirinto), cole aqui a regra do arquivo
+   antigo daquele jogo, sempre no padrão:
+     body.modo-foco .classe-do-jogo,
+     .console-frame:fullscreen .classe-do-jogo { ... }
+*/
