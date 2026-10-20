@@ -648,7 +648,7 @@ body.cursor-padrao #cursor-personalizado {
 .carousel-title {
     text-align: center;
     color: white;
-    font-size: 24px;
+    font-size: 28px;
     margin-bottom: 75px;
 }
 
@@ -729,7 +729,7 @@ body.cursor-padrao #cursor-personalizado {
         translate(-50%, -50%)
         scale(0.88);
 
-    opacity: 0.7;
+    opacity: 0.85;
 }
 
 
@@ -757,7 +757,7 @@ body.cursor-padrao #cursor-personalizado {
         translate(-50%, -50%)
         scale(0.88);
 
-    opacity: 0.7;
+    opacity: 0.85;
 }
 
 
