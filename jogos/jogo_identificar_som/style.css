@@ -233,10 +233,6 @@ body.cursor-padrao #cursor-personalizado {
   z-index: var(--z-fundo);
 }
 
-#azul   { background-image: linear-gradient(to bottom, rgba(0,179,255,1),    rgba(0,179,255,0));   opacity: 1; }
-#verde  { background-image: linear-gradient(to bottom, rgba(26,221,0,1),     rgba(26,221,0,0));    opacity: 0; }
-#marrom { background-image: linear-gradient(to bottom, rgba(130,80,30,0.90), rgba(130,80,30,0));   opacity: 0; }
-
 .nav {
   margin-inline: auto;
   display: flex;
