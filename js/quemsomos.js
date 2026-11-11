@@ -282,7 +282,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 });
-});
 
 // ─── Animação Infoneto ──────────────────────────────────────────
 
