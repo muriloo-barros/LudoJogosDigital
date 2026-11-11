@@ -676,15 +676,60 @@ body {
   z-index: var(--z-fundo);
 }
 
-.infoneto {
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  right: 10%;
-  left: 82%;
-  top: 27%;
-  z-index: var(--z-conteudo);
-}
+.balao {
+    position: absolute;
+    left: 86%;
+    width: 125px;
+    height: auto;
+    margin-left: -45px;
+ 
+    animation:
+      subir 9s ease-in-out 1 forwards,
+      arco 9s ease-in-out 1 forwards,
+      balancar 9s ease-in-out 1 forwards;
+    animation-play-state: paused;
+    z-index: var(--z-conteudo); 
+  }
+
+.balao.rodando {
+    animation-play-state: running;
+  }
+
+@keyframes subir {
+    from {
+      bottom: 200px;
+    }
+    to {
+      bottom: calc(100vh - 100px);
+    }
+  }
+ 
+  @keyframes arco {
+    0% {
+      translate: 0 0;
+    }
+    50% {
+      translate: 100px 0;
+    }
+    65% {
+      translate: 50px 0;
+    }
+    100% {
+      translate: 0 0;
+    }
+  }
+ 
+  @keyframes balancar {
+    0%   { rotate: 0deg; }
+    12%  { rotate: 4deg; }
+    25%  { rotate: -4deg; }
+    37%  { rotate: 4deg; }
+    50%  { rotate: -4deg; }
+    62%  { rotate: 4deg; }
+    75%  { rotate: -4deg; }
+    87%  { rotate: 4deg; }
+    100% { rotate: 0deg; }
+  }
 
 .main-card{
     position: relative;
