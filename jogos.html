@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="LudoGames — jogos educativos e divertidos para crianças. Explore, aprenda e se divirta!">
-    <title>LudoGames</title>
+    <title>LudoJogos</title>
     <link rel="stylesheet" href="css/jogos.css">
     <link rel="shortcut icon" href="imgs/favicon.png" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Margarine&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Margarine&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
     
 <body>
@@ -38,22 +38,45 @@
                     <img src="imgs/prikito1.png" alt="">
                 </div>
 
+                <!-- Placa de madeira: agrupa botões de música + acessibilidade -->
+            <div class="placa-header">
+                <span class="folha folha-tl" aria-hidden="true"></span>
+                <span class="folha folha-tr" aria-hidden="true"></span>
+                <span class="folha folha-bl" aria-hidden="true"></span>
+                <span class="folha folha-br" aria-hidden="true"></span>
+
+                <!-- Botão de música de fundo -->
+                <button class="btn-musica" id="btnMusica" aria-label="Tocar música de fundo" aria-pressed="false" title="Música de fundo">
+                    <svg class="icone-musica-play" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg class="icone-musica-pause" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M6 5h4v14H6zM14 5h4v14h-4z"/>
+                    </svg>
+                </button>
+
                 <!-- Botão de acessibilidade -->
                 <button class="btn-acessibilidade" id="btnAcessibilidade" aria-label="Abrir painel de acessibilidade" title="Acessibilidade">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path d="M12 15.5A3.5 3.5 0 0 1 8.5 12 3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.92c.04-.3.07-.62.07-.96s-.03-.66-.07-1l2.15-1.68c.19-.15.24-.42.12-.64l-2.04-3.53c-.12-.22-.39-.3-.61-.22l-2.54 1.02c-.52-.4-1.08-.73-1.69-.98l-.38-2.7C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.7c-.61.25-1.17.59-1.69.98L4.9 5.08c-.22-.08-.49 0-.61.22L2.25 8.83c-.13.22-.07.49.12.64l2.15 1.68c-.04.34-.07.67-.07 1s.03.65.07.96l-2.15 1.7c-.19.14-.24.42-.12.63l2.04 3.54c.12.22.39.3.61.22l2.54-1.01c.52.4 1.08.73 1.69.98l.38 2.7c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.7c.61-.25 1.17-.58 1.69-.98l2.54 1.01c.22.08.49 0 .61-.22l2.04-3.54c.12-.21.07-.49-.12-.63l-2.15-1.7z"/>
                     </svg>
                 </button>
+            </div>
 
             </nav>
         </header>
     </div>
 
+    <!-- Elemento de áudio da música de fundo desta página. O caminho é
+        padronizado como sons/musica-fundo.mp3 — basta substituir o
+        arquivo depois, sem precisar mexer no código. -->
+    <audio id="musicaFundo" src="sons/musica-fundo-jogos.mp3" loop preload="none"></audio>
+
     <!-- Overlay do painel de acessibilidade -->
     <div class="sb-overlay" id="sbOverlay" aria-hidden="true"></div>
 
     <!-- Painel lateral de acessibilidade -->
-    <aside class="sidebar-acessibilidade" id="sidebarAcessibilidade" aria-label="Painel de acessibilidade" aria-hidden="true">
+    <aside class="sidebar-acessibilidade" id="sidebarAcessibilidade" aria-label="Painel de acessibilidade" aria-hidden="true" inert>
 
         <div class="sb-header">
             <h2 class="sb-titulo">Acessibilidade</h2>
@@ -80,6 +103,16 @@
                 </label>
                 <label class="toggle">
                     <input type="checkbox" id="togLegenda" checked>
+                    <span class="slider-tog"></span>
+                </label>
+            </div>
+
+            <div class="sb-row">
+                <label class="sb-label" for="togMusica">
+                    <span aria-hidden="true">🎵</span> Música de fundo
+                </label>
+                <label class="toggle">
+                    <input type="checkbox" id="togMusica">
                     <span class="slider-tog"></span>
                 </label>
             </div>
@@ -128,6 +161,17 @@
                     <button class="btn-op" data-fonte="grande">G</button>
                 </div>
             </div>
+
+            <div class="sb-row sb-row-select">
+                <label class="sb-label" for="selTipoFonte">
+                    <span aria-hidden="true">🔡</span> Tipo de fonte
+                </label>
+                <select class="sb-select" id="selTipoFonte" aria-label="Escolher tipo de fonte">
+                    <option value="padrao">Padrão</option>
+                    <option value="dislexia">Dislexia (OpenDyslexic)</option>
+                    <option value="discalculia">Discalculia (Atkinson Hyperlegible)</option>
+                </select>
+            </div>
         </section>
 
         <hr class="sb-divider">
@@ -150,19 +194,214 @@
     </aside>
 
     <!-- Carrossel -->
-    <div class="carousel-wrapper">
-  <div class="carousel-row">
-    <button class="carousel-btn" id="btnPrev" aria-label="Anterior">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
- 
-    <div class="carousel-track" id="carouselTrack"></div>
- 
-    <button class="carousel-btn" id="btnNext" aria-label="Próximo">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-    </button>
-  </div>
-</div>
+
+    <!-- =========================================
+         CARROSSEL 1
+    ========================================= -->
+
+    <div class="carousel">
+
+        <div class="carousel-title">Jogos para neurodivergentes</div>
+
+
+        <div class="carousel-window">
+            <div class="carousel-track">
+
+                <a href="../LudoJogosDigital/jogos/organizador_emocoes/organizador.html">
+                    <div class="carousel-card">
+                        <img src="../LudoJogosDigital/imgs/emoções.png" alt="Imagem 1">
+                        <div class="card-title">Organizador de emoções</div>
+                    </div>
+                </a>    
+
+                <a href="../LudoJogosDigital/jogos/rotina_visual/rotina.html">
+                    <div class="carousel-card">
+                        <img src="../LudoJogosDigital/imgs/rotina-visual.png" alt="Imagem 2">
+                        <div class="card-title">Rotina visual</div>
+                    </div>
+                </a>
+
+                <a href="../LudoJogosDigital/jogos/foco_alvo/foco.html">
+                    <div class="carousel-card">
+                        <img src="../LudoJogosDigital/imgs/estrelas.png" alt="Imagem 3">
+                        <div class="card-title">Foco no alvo</div>
+                    </div>
+                </a>
+
+                <a href="../LudoJogosDigital/jogos/organizador_emocoes/organizador.html">
+                    <div class="carousel-card">
+                        <img src="../LudoJogosDigital/imgs/emoções.png" alt="Imagem 1">
+                        <div class="card-title">Organizador de emoções</div>
+                    </div>
+                </a>
+
+                <a href="../LudoJogosDigital/jogos/rotina_visual/rotina.html">
+                    <div class="carousel-card">
+                        <img src="../LudoJogosDigital/imgs/rotina-visual.png" alt="Imagem 2">
+                        <div class="card-title">Rotina visual</div>
+                    </div>
+                </a>
+
+                <a href="../LudoJogosDigital/jogos/foco_alvo/foco.html">
+                    <div class="carousel-card">
+                        <img src="../LudoJogosDigital/imgs/estrelas.png" alt="Imagem 3">
+                        <div class="card-title">Foco no alvo</div>
+                    </div>
+                </a>
+
+            </div>
+
+            <button class="carousel-button prev">
+                    <svg class="icone-musica-play" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+            <button class="carousel-button next">
+                    <svg class="icone-musica-play" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+        </div>
+
+    </div>
+
+    <!-- =========================================
+         CARROSSEL 2
+    ========================================= -->
+
+    <div class="carousel">
+
+        <div class="carousel-title">Jogos para deficientes auditivos</div>
+
+
+        <div class="carousel-window">
+
+            <div class="carousel-track">
+                <a href="../LudoJogosDigital/jogos/caca_tesouro/caca.html">
+                    <div class="carousel-card">
+                        <img src="../LudoJogosDigital/imgs/caca-ao-tesouro.png" alt="Imagem 1">
+                        <div class="card-title">Caça ao tesouro</div>
+                    </div>
+                </a>
+
+
+                <a href="../LudoJogosDigital/jogos/sequencia_libras/libras.html">
+                    <div class="carousel-card">
+                        <img src="../LudoJogosDigital/imgs/sequencia-de-libras.png" alt="Imagem 2">
+                        <div class="card-title">Sequência de Libras</div>
+                    </div>
+                </a>
+
+
+                <a href="../LudoJogosDigital/jogos/palavras_combina/palavra.html">
+                    <div class="carousel-card">
+                        <img src="../LudoJogosDigital/imgs/palavra-que-combina.png" alt="Imagem 3">
+                        <div class="card-title">Palavra que combina</div>
+                    </div>
+                </a>
+
+
+                <a href="../LudoJogosDigital/jogos/caca_tesouro/caca.html">
+                    <div class="carousel-card">
+                        <img src="../LudoJogosDigital/imgs/caca-ao-tesouro.png" alt="Imagem 4">
+                        <div class="card-title">Caça ao tesouro</div>
+                    </div>
+                </a>
+
+
+                <a href="../LudoJogosDigital/jogos/sequencia_libras/libras.html">
+                    <div class="carousel-card">
+                        <img src="../LudoJogosDigital/imgs/sequencia-de-libras.png" alt="Imagem 5">
+                        <div class="card-title">Sequência de Libras</div>
+                    </div>
+                </a>
+
+                <a href="../LudoJogosDigital/jogos/palavras_combina/palavra.html">
+                    <div class="carousel-card">
+                        <img src="../LudoJogosDigital/imgs/palavra-que-combina.png" alt="Imagem 6">
+                        <div class="card-title">Palavra que combina</div>
+                    </div>
+                </a>
+
+            </div>
+
+            <button class="carousel-button prev">
+                    <svg class="icone-musica-play" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+            <button class="carousel-button next">
+                    <svg class="icone-musica-play" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+        </div>
+
+    </div>
+
+    <!-- =========================================
+         CARROSSEL 3
+    ========================================= -->
+
+    <div class="carousel">
+
+        <div class="carousel-title">Jogos para deficientes visuais</div>
+
+        <div class="carousel-window">
+
+            <div class="carousel-track">
+
+                <a href="../LudoJogosDigital/jogos/genius_som/genius.html">
+                    <div class="carousel-card">
+                        <img src="../LudoJogosDigital/imgs/genius.png" alt="Imagem 6">
+                        <div class="card-title">Genius</div>
+                    </div>
+                </a>
+
+                <a href="../LudoJogosDigital/jogos/jogo_identificar_som/superouvido.html">
+                    <div class="carousel-card">
+                        <img src="../LudoJogosDigital/imgs/super-ouvido.png" alt="Imagem 7">
+                        <div class="card-title">Super ouvido</div>
+                    </div>
+                </a>
+
+
+                <a href="../LudoJogosDigital/jogos/labirinto_sonoro/labirinto.html">
+                    <div class="carousel-card">
+                        <img src="../LudoJogosDigital/imgs/labirinto.png" alt="Imagem 8">
+                        <div class="card-title">Labirinto sonoro</div>
+                    </div>
+                </a>
+
+                <a href="../LudoJogosDigital/jogos/genius_som/genius.html">
+                    <div class="carousel-card">
+                        <img src="../LudoJogosDigital/imgs/genius.png" alt="Imagem 6">
+                        <div class="card-title">Genius</div>
+                    </div>
+                </a>
+
+                <a href="../LudoJogosDigital/jogos/jogo_identificar_som/superouvido.html">
+                    <div class="carousel-card">
+                        <img src="../LudoJogosDigital/imgs/super-ouvido.png" alt="Imagem 7">
+                        <div class="card-title">Super ouvido</div>
+                    </div>
+                </a>
+
+
+                <a href="../LudoJogosDigital/jogos/labirinto_sonoro/labirinto.html">
+                    <div class="carousel-card">
+                        <img src="../LudoJogosDigital/imgs/labirinto.png" alt="Imagem 8">
+                        <div class="card-title">Labirinto sonoro</div>
+                    </div>
+                </a>
+
+            <button class="carousel-button prev">
+                    <svg class="icone-musica-play" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+            <button class="carousel-button next">
+                    <svg class="icone-musica-play" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+        </div>
+
+    </div>
 
         <!-- Legenda de acessibilidade -->
     <div id="legenda-container" aria-live="polite" aria-atomic="true">

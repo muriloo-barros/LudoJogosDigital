@@ -1,0 +1,17 @@
+Esta pasta é compartilhada pelas 4 páginas principais do site (Home,
+Jogos, Vídeos e Quem Somos). Cada uma toca um arquivo de música
+diferente — coloque aqui os arquivos com estes nomes exatos:
+
+musica-fundo-index.mp3       → Home (index.html)
+musica-fundo-jogos.mp3       → Jogos (jogos.html)
+musica-fundo-videos.mp3      → Vídeos (videos.html)
+musica-fundo-quemsomos.mp3   → Quem Somos (quemsomos.html)
+
+O site já está configurado para tocar cada arquivo quando a pessoa
+clicar no botão de música do cabeçalho ou ligar o toggle "Música de
+fundo" no painel de acessibilidade daquela página. Não precisa mexer
+em nenhum código — só adicionar os arquivos com esses nomes aqui.
+
+Cada um dos 3 jogos (Super Ouvido, Organizador de Emoções, Genius das
+Cores) tem sua própria pasta "sons" dentro da pasta do jogo, com o
+mesmo esquema: coloque lá um arquivo chamado "musica-fundo.mp3".

@@ -4,9 +4,7 @@
     --z-header:   100;
     --z-overlay:  1000;
     --z-topo:     9999;
-    --bg: #ffffff00;
-    --card-radius: 20px;
-    --text-light: #ffffff;
+    --carousel-spacing: 300px;
 }
 
 /* ─── Reset ─────────────────────────────────────────────────────── */
@@ -96,6 +94,107 @@ body.fonte-grande .box6       { height: 14vh; width: 26vw; }
 body.fonte-pequena .text      { font-size: 3.2em; }
 body.fonte-pequena .text2     { font-size: 2em; }
 body.fonte-pequena .caixa     { font-size: 1.6em; }
+@font-face {
+  font-family: "OpenDyslexic";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/fontsource/fonts/opendyslexic@latest/latin-400-normal.woff2") format("woff2"),
+       url("https://cdn.jsdelivr.net/fontsource/fonts/opendyslexic@latest/latin-400-normal.woff") format("woff");
+}
+
+@font-face {
+  font-family: "OpenDyslexic";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/fontsource/fonts/opendyslexic@latest/latin-700-normal.woff2") format("woff2"),
+       url("https://cdn.jsdelivr.net/fontsource/fonts/opendyslexic@latest/latin-700-normal.woff") format("woff");
+}
+
+body.fonte-dislexia * {
+  font-family: "OpenDyslexic", "Margarine", sans-serif !important;
+}
+
+body.fonte-discalculia * {
+  font-family: "Atkinson Hyperlegible", "Margarine", sans-serif !important;
+}
+
+body.fonte-dislexia,
+body.fonte-discalculia {
+  font-size: 0.82em;
+}
+
+body.fonte-pequena.fonte-dislexia,
+body.fonte-pequena.fonte-discalculia {
+  font-size: calc(14px * 0.82);
+}
+
+body.fonte-normal.fonte-dislexia,
+body.fonte-normal.fonte-discalculia {
+  font-size: calc(16px * 0.82);
+}
+
+body.fonte-grande.fonte-dislexia,
+body.fonte-grande.fonte-discalculia {
+  font-size: calc(20px * 0.82);
+}
+
+body.fonte-discalculia {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Acessibilidade: tipo de fonte (dislexia / discalculia) ──── */
+@font-face {
+  font-family: "OpenDyslexic";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/fontsource/fonts/opendyslexic@latest/latin-400-normal.woff2") format("woff2"),
+       url("https://cdn.jsdelivr.net/fontsource/fonts/opendyslexic@latest/latin-400-normal.woff") format("woff");
+}
+
+@font-face {
+  font-family: "OpenDyslexic";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/fontsource/fonts/opendyslexic@latest/latin-700-normal.woff2") format("woff2"),
+       url("https://cdn.jsdelivr.net/fontsource/fonts/opendyslexic@latest/latin-700-normal.woff") format("woff");
+}
+
+body.fonte-dislexia * {
+  font-family: "OpenDyslexic", "Margarine", sans-serif !important;
+}
+
+body.fonte-discalculia * {
+  font-family: "Atkinson Hyperlegible", "Margarine", sans-serif !important;
+}
+
+body.fonte-dislexia,
+body.fonte-discalculia {
+  font-size: 0.82em;
+}
+
+body.fonte-pequena.fonte-dislexia,
+body.fonte-pequena.fonte-discalculia {
+  font-size: calc(14px * 0.82);
+}
+
+body.fonte-normal.fonte-dislexia,
+body.fonte-normal.fonte-discalculia {
+  font-size: calc(16px * 0.82);
+}
+
+body.fonte-grande.fonte-dislexia,
+body.fonte-grande.fonte-discalculia {
+  font-size: calc(20px * 0.82);
+}
+
+body.fonte-discalculia {
+  font-variant-numeric: tabular-nums;
+}
+
 
 /* ─── Acessibilidade: foco visível ──────────────────────────────── */
 :focus-visible {
@@ -262,6 +361,64 @@ body.cursor-padrao #cursor-personalizado {
   transition: fill 0.3s ease;
 }
 
+/* ─── Botão de música de fundo ────────────────── */
+.btn-musica {
+  width: 44px;
+  height: 44px;
+  background: #A15A40;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  transition: transform 0.2s ease, background 0.3s ease;
+  z-index: var(--z-header);
+  position: relative;
+}
+
+.btn-musica:hover {
+  background: #FEE764;
+}
+
+.btn-musica:hover svg {
+  fill: #3d1f0a;
+}
+
+.btn-musica svg {
+  width: 20px;
+  height: 20px;
+  fill: white;
+  transition: fill 0.3s ease;
+}
+
+.icone-musica-pause { display: none; }
+
+.btn-musica.tocando .icone-musica-play  { display: none; }
+.btn-musica.tocando .icone-musica-pause { display: block; }
+
+.btn-musica.tocando {
+  animation: pulso-musica 1.6s ease-in-out infinite;
+}
+
+@keyframes pulso-musica {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(254, 231, 100, 0.5); }
+  50%      { box-shadow: 0 0 0 6px rgba(254, 231, 100, 0); }
+}
+
+.btn-musica:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-musica:disabled:hover {
+  background: #A15A40;
+}
+
+.btn-musica:disabled:hover svg {
+  fill: white;
+}
+
 /* ─── Overlay ────────────────────────────────────────────────────── */
 .sb-overlay {
   position: fixed;
@@ -283,14 +440,15 @@ body.cursor-padrao #cursor-personalizado {
   position: fixed;
   top: 0;
   right: 0;
-  width: 400px;
+  width: 440px;
+  max-width: 92vw;
   height: 100vh;
   background: #3d1f0a;
   z-index: var(--z-overlay);
   transform: translateX(100%);
   transition: transform 0.35s ease;
   overflow-y: auto;
-  padding: 24px 20px;
+  padding: 30px 26px;
   box-shadow: -4px 0 20px rgba(0,0,0,0.3);
 }
 
@@ -302,12 +460,12 @@ body.cursor-padrao #cursor-personalizado {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 26px;
 }
 
 .sb-titulo {
   color: white;
-  font-size: 24px;
+  font-size: 30px;
   font-family: "Margarine", sans-serif;
   font-weight: normal;
 }
@@ -316,10 +474,10 @@ body.cursor-padrao #cursor-personalizado {
   background: #A15A40;
   border: none;
   color: white;
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  font-size: 16px;
+  font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -332,15 +490,15 @@ body.cursor-padrao #cursor-personalizado {
 }
 
 .sb-secao {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .sb-secao-titulo {
   color: #e8a87c;
-  font-size: 12px;
+  font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   font-family: sans-serif;
   font-weight: 700;
 }
@@ -349,30 +507,30 @@ body.cursor-padrao #cursor-personalizado {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 20px;
   gap: 10px;
 }
 
 .sb-label {
   color: white;
-  font-size: 16px;
+  font-size: 19px;
   font-family: "Margarine", sans-serif;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .sb-divider {
   border: none;
   border-top: 1px solid #6B3A1D;
-  margin: 16px 0;
+  margin: 20px 0;
 }
 
 /* ─── Toggle switch ──────────────────────────────────────────────── */
 .toggle {
   position: relative;
-  width: 52px;
-  height: 28px;
+  width: 58px;
+  height: 32px;
   flex-shrink: 0;
 }
 
@@ -387,15 +545,15 @@ body.cursor-padrao #cursor-personalizado {
   position: absolute;
   inset: 0;
   background: #6B3A1D;
-  border-radius: 28px;
+  border-radius: 32px;
   transition: background 0.3s ease;
 }
 
 .slider-tog::before {
   content: '';
   position: absolute;
-  width: 22px;
-  height: 22px;
+  width: 25px;
+  height: 25px;
   left: 3px;
   bottom: 3px;
   background: white;
@@ -408,14 +566,14 @@ body.cursor-padrao #cursor-personalizado {
 }
 
 .toggle input:checked + .slider-tog::before {
-  transform: translateX(24px);
+  transform: translateX(26px);
   background: #3d1f0a;
 }
 
 /* ─── Botões de opção (P/M/G, velocidade) ────────────────────────── */
 .btn-grupo {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   flex-shrink: 0;
 }
 
@@ -423,12 +581,12 @@ body.cursor-padrao #cursor-personalizado {
   background: #6B3A1D;
   border: none;
   color: white;
-  padding: 6px 12px;
-  border-radius: 20px;
+  padding: 9px 16px;
+  border-radius: 22px;
   font-family: "Margarine", sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   transition: background 0.2s ease;
-  min-width: 36px;
+  min-width: 42px;
 }
 
 .btn-op:hover {
@@ -440,109 +598,306 @@ body.cursor-padrao #cursor-personalizado {
   color: #3d1f0a;
 }
 
+.sb-row-select {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sb-select {
+  width: 100%;
+  background: #6B3A1D;
+  border: none;
+  color: white;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-family: "Margarine", sans-serif;
+  font-size: 17px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 20px;
+  padding-right: 40px;
+}
+
+.sb-select:hover,
+.sb-select:focus-visible {
+  background-color: #A15A40;
+}
+
+.sb-select option {
+  background: #3d1f0a;
+  color: white;
+  font-family: sans-serif;
+}
+
 /* ─── Carrossel ──────────────────────────────────────────────────── */
 
-.carousel-wrapper {
+.carousel {
     width: 100%;
-    margin: 0 auto;
-    background: var(--bg);
-    padding: 24px 16px;
-    box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  }
- 
-  .carousel-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
- 
-  .carousel-btn {
-    flex-shrink: 0;
-    width: 50px;
-    height: 50px;
+    max-width: 1000px;
+    margin: 0 auto 80px;
+    margin-bottom: var(--carousel-spacing);
+}
+
+
+.carousel-title {
+    text-align: center;
+    color: white;
+    font-size: 28px;
+    margin-bottom: 75px;
+}
+
+
+/* =========================================
+   ÁREA DOS CARDS
+========================================= */
+
+.carousel-window {
+    position: relative;
+
+    width: 100%;
+    height: 430px;
+
+    overflow: visible;
+}
+
+
+/* =========================================
+   TRACK
+========================================= */
+
+.carousel-track {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* =========================================
+   CARD
+========================================= */
+
+.carousel-card {
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    top: 50%;
+    left: 50%;
+
+    margin: 0;
+
+    border-radius: 14px;
+    overflow: hidden;
+
+    transition:
+        left 0.6s ease,
+        transform 0.6s ease,
+        opacity 0.6s ease;
+
+    transform:
+        translate(-50%, -50%)
+        scale(0.88);
+}
+
+
+/* =========================================
+   IMAGEM
+========================================= */
+
+.carousel-card img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+/* =========================================
+   POSIÇÃO ESQUERDA
+========================================= */
+
+.carousel-card.left {
+    transform:
+        translate(-50%, -50%)
+        scale(0.88);
+
+    opacity: 0.85;
+}
+
+
+/* =========================================
+   POSIÇÃO CENTRAL
+========================================= */
+
+.carousel-card.center {
+    transform:
+        translate(-50%, -50%)
+        scale(1.08);
+
+    opacity: 1;
+
+    z-index: 5;
+}
+
+
+/* =========================================
+   POSIÇÃO DIREITA
+========================================= */
+
+.carousel-card.right {
+    transform:
+        translate(-50%, -50%)
+        scale(0.88);
+
+    opacity: 0.85;
+}
+
+
+/* =========================================
+   CARDS QUE ESTÃO FORA DA VISÃO
+========================================= */
+
+.carousel-card.hidden-left {
+    opacity: 0;
+}
+
+.carousel-card.hidden-right {
+    opacity: 0;
+}
+
+
+/* =========================================
+   TÍTULO
+========================================= */
+
+.card-title {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    padding:
+        45px
+        12px
+        15px;
+
+    color: white;
+
+    text-align: center;
+
+    font-size: 22px;
+    font-weight: 500;
+
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.80),
+        rgba(0, 0, 0, 0)
+    );
+}
+
+
+/* =========================================
+   SETAS
+========================================= */
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border: none;
     border-radius: 50%;
-    border: 1px solid rgba(0,0,0,0.06);
-    background: #fff;
-    color: #404040;
+    background: #A15A40;
+    color: #222;
+    font-size: 27px;
+    z-index: var(--z-conteudo);
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    transition: background 0.15s ease, opacity 0.15s ease;
-  }
- 
-  .carousel-btn:hover:not(:disabled) {
-    background: #f0f0f0;
-  }
- 
-  .carousel-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
- 
-  .carousel-track {
-    flex: 1;
-    display: flex;
-    gap: 12px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    padding-bottom: 8px;
-    min-width: 0;
-  }
- 
-  .carousel-track::-webkit-scrollbar {
-    display: none;
-  }
- 
-  .carousel-card {
-    position: relative;
-    flex-shrink: 0;
-    width: 450px;
-    height: 450px;
-    border-radius: var(--card-radius);
-    overflow: hidden;
-    scroll-snap-align: start;
-  }
- 
-  .carousel-card img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    user-select: none;
-    -webkit-user-drag: none;
-  }
- 
-  .carousel-card .overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 55%, transparent 100%);
-  }
- 
-  .carousel-card .card-title {
-    position: absolute;
-    left:  0;
-    right: 0;
-    bottom: 0;
-    text-align: center;
-    padding: 12px;
-    color: var(--text-light);
-    font-size: 25px;
-    font-weight: 600;
-    line-height: 2;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
-  }
- 
-  @media (max-width: 480px) {
+    border: 2px solid #242424;
+    margin-right: 12px;
+    box-shadow: inset -1.5px -2px 5px rgba(0, 0, 0, 0.6);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.carousel-button:hover {
+    transform:
+        translateY(-50%)
+        scale(1.1);
+    box-shadow: inset -1.5px -2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.carousel-button svg {
+  fill: #fff;
+  width: 23px;
+  height: 23px;
+
+}
+
+
+.carousel-button.prev {
+    left: -300px;
+}
+
+.carousel-button.prev svg {
+  transform: rotate(180deg);
+}
+
+
+.carousel-button.next {
+    right: -310px;
+}
+
+
+/* =========================================
+   CELULAR
+========================================= */
+
+@media (max-width: 700px) {
+
     .carousel-card {
-      width: 130px;
-      height: 180px;
+        width: 200px;
+        height: 200px;
     }
-  }
+
+
+    .carousel-card.left {
+        left: calc(50% - 285px);
+    }
+
+
+    .carousel-card.center {
+        left: calc(50% - 100px);
+    }
+
+
+    .carousel-card.right {
+        left: calc(50% + 85px);
+    }
+
+
+    .carousel-button.prev {
+        left: 5px;
+    }
+
+
+    .carousel-button.next {
+        right: 5px;
+    }
+}
 
 /* ─── Cursor personalizado ───────────────────────────────────────── */
 #cursor-personalizado {
@@ -595,4 +950,272 @@ body.cursor-padrao #cursor-personalizado {
 .icone-audio {
   font-size: 26px;
   animation: pulso 1s infinite;
+}
+
+/* ════════════════════════════════════════════════════════════════ */
+/* ─── Placa de madeira do header (música + acessibilidade) ─────── */
+/* ════════════════════════════════════════════════════════════════ */
+.placa-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 18px;
+    margin-right: 20px;
+    z-index: var(--z-header);
+    background:
+        repeating-linear-gradient(
+            92deg,
+            rgba(60, 32, 12, 0.18) 0px,
+            rgba(60, 32, 12, 0.18) 2px,
+            transparent 2px,
+            transparent 7px
+        ),
+        repeating-linear-gradient(
+            88deg,
+            rgba(120, 70, 30, 0.25) 0px,
+            rgba(120, 70, 30, 0.25) 1px,
+            transparent 1px,
+            transparent 11px
+        ),
+        linear-gradient(
+            135deg,
+            #8B5A2B 0%,
+            #A16936 30%,
+            #7A4A20 60%,
+            #9B5F2E 100%
+        );
+    border-radius: 18px;
+    box-shadow:
+        inset 0 0 0 3px #5C3317,
+        inset 0 2px 6px rgba(255, 220, 180, 0.25),
+        inset 0 -3px 8px rgba(0, 0, 0, 0.35),
+        0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Cantos de folhagem verde */
+.folha {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    background: radial-gradient(
+        ellipse at 30% 30%,
+        #4CAF50 0%,
+        #2E7D32 55%,
+        #1B5E20 100%
+    );
+    border-radius: 0 100% 0 100%;
+    box-shadow:
+        inset -2px -2px 4px rgba(0, 0, 0, 0.3),
+        inset 2px 2px 3px rgba(255, 255, 255, 0.2),
+        0 1px 3px rgba(0, 0, 0, 0.3);
+    z-index: calc(var(--z-header) + 1);
+    pointer-events: none;
+}
+.folha-tl { top: -8px; left: -8px;  transform: rotate(-15deg); }
+.folha-tr { top: -8px; right: -8px; transform: rotate(75deg);  }
+.folha-bl { bottom: -8px; left: -8px;  transform: rotate(195deg); }
+.folha-br { bottom: -8px; right: -8px; transform: rotate(105deg); }
+
+.folha::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    width: 80%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-50%) rotate(-15deg);
+}
+
+/* Botões como "botões de madeira" individuais com relevo */
+.placa-header .btn-musica,
+.placa-header .btn-acessibilidade {
+    width: 46px;
+    height: 46px;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            rgba(50, 25, 10, 0.2) 0px,
+            rgba(50, 25, 10, 0.2) 1px,
+            transparent 1px,
+            transparent 5px
+        ),
+        linear-gradient(145deg, #B06A35 0%, #8B4A1E 50%, #A15A28 100%);
+    border: 2px solid #4A2810;
+    border-radius: 50%;
+    margin-right: 0;
+    box-shadow:
+        inset 0 2px 3px rgba(255, 200, 150, 0.3),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.3),
+        0 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+.placa-header .btn-musica:hover,
+.placa-header .btn-acessibilidade:hover {
+    transform: translateY(1px);
+    box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.35),
+        inset 0 -1px 2px rgba(255, 200, 150, 0.15),
+        0 2px 4px rgba(0, 0, 0, 0.2);
+    background:
+        repeating-linear-gradient(
+            90deg,
+            rgba(50, 25, 10, 0.25) 0px,
+            rgba(50, 25, 10, 0.25) 1px,
+            transparent 1px,
+            transparent 5px
+        ),
+        linear-gradient(145deg, #9B5A2A 0%, #7A3F18 50%, #8E4F22 100%);
+}
+
+.placa-header .btn-acessibilidade:hover {
+    transform: rotate(45deg) translateY(0);
+}
+
+.placa-header .btn-musica.tocando {
+    animation: pulso-musica 1.6s ease-in-out infinite;
+}
+
+.placa-header .btn-musica:disabled {
+    opacity: 0.4;
+}
+.placa-header .btn-musica:disabled:hover {
+    transform: none;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            rgba(50, 25, 10, 0.2) 0px,
+            rgba(50, 25, 10, 0.2) 1px,
+            transparent 1px,
+            transparent 5px
+        ),
+        linear-gradient(145deg, #B06A35 0%, #8B4A1E 50%, #A15A28 100%);
+    box-shadow:
+        inset 0 2px 3px rgba(255, 200, 150, 0.3),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.3),
+        0 3px 6px rgba(0, 0, 0, 0.25);
+}
+.placa-header .btn-musica:disabled:hover svg {
+    fill: white;
+}
+
+.placa-header .btn-musica svg,
+.placa-header .btn-acessibilidade svg {
+    fill: white;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.4));
+}
+
+/* Alto contraste */
+body.alto-contraste .placa-header {
+    box-shadow:
+        inset 0 0 0 3px #FFFF00,
+        0 4px 12px rgba(0, 0, 0, 0.5);
+}
+body.alto-contraste .placa-header .btn-musica,
+body.alto-contraste .placa-header .btn-acessibilidade {
+    border-color: #FFFF00;
+}
+
+/* Sem animações */
+body.sem-animacoes .placa-header .btn-musica,
+body.sem-animacoes .placa-header .btn-acessibilidade {
+    transition: none;
+}
+body.sem-animacoes .btn-musica.tocando {
+    animation: none;
+}
+
+/* ─── Responsividade ───────────────────────────────────────────── */
+
+/* Tablet (≤ 768px) */
+@media (max-width: 768px) {
+    .placa-header {
+        padding: 8px 12px;
+        gap: 10px;
+        margin-right: 12px;
+        border-radius: 14px;
+    }
+    .placa-header .btn-musica,
+    .placa-header .btn-acessibilidade {
+        width: 40px;
+        height: 40px;
+    }
+    .placa-header .btn-musica svg,
+    .placa-header .btn-acessibilidade svg {
+        width: 18px;
+        height: 18px;
+    }
+    .folha {
+        width: 20px;
+        height: 20px;
+    }
+    .folha-tl { top: -6px; left: -6px; }
+    .folha-tr { top: -6px; right: -6px; }
+    .folha-bl { bottom: -6px; left: -6px; }
+    .folha-br { bottom: -6px; right: -6px; }
+}
+
+/* Mobile (≤ 480px) — sem folhagem */
+@media (max-width: 480px) {
+    .placa-header {
+        padding: 6px 10px;
+        gap: 8px;
+        margin-right: 8px;
+        border-radius: 12px;
+        box-shadow:
+            inset 0 0 0 2px #5C3317,
+            inset 0 1px 4px rgba(255, 220, 180, 0.2),
+            0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+    .placa-header .btn-musica,
+    .placa-header .btn-acessibilidade {
+        width: 36px;
+        height: 36px;
+        border-width: 1.5px;
+    }
+    .placa-header .btn-musica svg,
+    .placa-header .btn-acessibilidade svg {
+        width: 16px;
+        height: 16px;
+    }
+    .folha {
+        display: none;
+    }
+}
+
+/* Mobile pequeno (≤ 360px) */
+@media (max-width: 360px) {
+    .placa-header {
+        padding: 5px 8px;
+        gap: 6px;
+        margin-right: 6px;
+    }
+    .placa-header .btn-musica,
+    .placa-header .btn-acessibilidade {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+/* Fonte grande */
+body.fonte-grande .placa-header {
+    padding: 12px 20px;
+    gap: 16px;
+}
+body.fonte-grande .placa-header .btn-musica,
+body.fonte-grande .placa-header .btn-acessibilidade {
+    width: 50px;
+    height: 50px;
+}
+body.fonte-grande .placa-header .btn-musica svg,
+body.fonte-grande .placa-header .btn-acessibilidade svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Fonte pequena */
+body.fonte-pequena .placa-header {
+    padding: 8px 14px;
+    gap: 12px;
 }

@@ -186,6 +186,13 @@ document.addEventListener("DOMContentLoaded", function () {
   function abrirSidebar() {
     sidebar.classList.add("aberta");
     sidebar.setAttribute("aria-hidden", "false");
+    // Fix: aria-hidden sozinho não tira o painel da navegação por Tab.
+    // Quando o painel estava fechado (fora da tela, mas ainda no layout),
+    // o foco conseguia "entrar" nele silenciosamente, dando a impressão de
+    // que o Tab tinha sumido. "inert" remove de fato os elementos de
+    // dentro da navegação por teclado e do leitor de tela enquanto o
+    // painel estiver fechado.
+    sidebar.inert = false;
     overlay.classList.add("ativo");
     btnFechar.focus();
   }
@@ -193,6 +200,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function fecharSidebar() {
     sidebar.classList.remove("aberta");
     sidebar.setAttribute("aria-hidden", "true");
+    sidebar.inert = true;
     overlay.classList.remove("ativo");
     btnAbrir.focus();
   }
@@ -256,10 +264,75 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  const selTipoFonte = document.getElementById("selTipoFonte");
+  if (selTipoFonte) {
+    selTipoFonte.addEventListener("change", function () {
+      document.body.classList.remove("fonte-dislexia", "fonte-discalculia");
+      if (this.value !== "padrao") {
+        document.body.classList.add("fonte-" + this.value);
+      }
+    });
+  }
+
   // ─── Toggle: Cursor personalizado ─────────────────────────────
   document.getElementById("togCursor").addEventListener("change", function () {
     document.body.classList.toggle("cursor-padrao", !this.checked);
   });
+
+  // ─── Música de fundo ────────────────────────────────────────────
+  //
+  // Nunca toca sozinha (nada de autoplay): só inicia quando a pessoa
+  // clica no botão do header ou liga o toggle "Música de fundo" no
+  // painel — os dois controles refletem e controlam o mesmo estado,
+  // ficando sempre sincronizados entre si.
+  const musicaFundo = document.getElementById("musicaFundo");
+  const btnMusica = document.getElementById("btnMusica");
+  const togMusica = document.getElementById("togMusica");
+
+  if (musicaFundo && btnMusica && togMusica) {
+    musicaFundo.volume = 0.35;
+
+    function tocarMusica() {
+      // .play() retorna uma Promise que pode rejeitar (ex: arquivo
+      // musica-fundo.mp3 ainda não foi adicionado nesta página, ou o
+      // navegador bloqueou por algum motivo). Isso não deve quebrar o
+      // resto do site — apenas a música não começa.
+      musicaFundo.play().then(() => {
+        btnMusica.classList.add("tocando");
+        btnMusica.setAttribute("aria-pressed", "true");
+        btnMusica.setAttribute("aria-label", "Pausar música de fundo");
+        togMusica.checked = true;
+      }).catch(() => {
+        // Arquivo ausente ou reprodução bloqueada: mantém a UI em
+        // estado "pausado" para não mentir sobre o que está tocando
+        pausarMusica();
+      });
+    }
+
+    function pausarMusica() {
+      musicaFundo.pause();
+      btnMusica.classList.remove("tocando");
+      btnMusica.setAttribute("aria-pressed", "false");
+      btnMusica.setAttribute("aria-label", "Tocar música de fundo");
+      togMusica.checked = false;
+    }
+
+    btnMusica.addEventListener("click", () => {
+      if (btnMusica.classList.contains("tocando")) {
+        pausarMusica();
+      } else {
+        tocarMusica();
+      }
+    });
+
+    togMusica.addEventListener("change", function () {
+      if (this.checked) {
+        tocarMusica();
+      } else {
+        pausarMusica();
+      }
+    });
+  }
 
   // ══════════════════════════════════════════════════════════════
   // ─── POPUP DE BOAS-VINDAS ─────────────────────────────────────

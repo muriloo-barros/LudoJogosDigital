@@ -1,0 +1,8 @@
+Para a música de fundo deste jogo, coloque aqui um arquivo chamado
+exatamente:
+
+musica-fundo.mp3
+
+O jogo já está configurado para tocá-lo quando a pessoa clicar no
+botão de música do cabeçalho ou ligar o toggle "Música de fundo" no
+painel de acessibilidade. Não precisa mexer em nenhum código.

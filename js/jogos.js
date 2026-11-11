@@ -175,61 +175,243 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ─── Carrossel ──────────────────────────────────────
 
-  // Troque por seus próprios itens (imagem + título)
-  const ITEMS = [
-    { id: 1, title: "Floresta ao amanhecer", image: "https://picsum.photos/seed/forest1/480/600" },
-    { id: 2, title: "Dunas do deserto", image: "https://picsum.photos/seed/desert2/480/600" },
-    { id: 3, title: "Costa rochosa", image: "https://picsum.photos/seed/coast3/480/600" },
-    { id: 4, title: "Montanhas nevadas", image: "https://picsum.photos/seed/mountain4/480/600" },
-    { id: 5, title: "Vale verdejante", image: "https://picsum.photos/seed/valley5/480/600" },
-    { id: 6, title: "Lago espelhado", image: "https://picsum.photos/seed/lake6/480/600" },
-    { id: 7, title: "Cidade à noite", image: "https://picsum.photos/seed/city7/480/600" },
-  ];
- 
-  const track = document.getElementById("carouselTrack");
-  const btnPrev = document.getElementById("btnPrev");
-  const btnNext = document.getElementById("btnNext");
- 
-  // Monta os cards dinamicamente a partir de ITEMS
-  function renderCards(items) {
-    track.innerHTML = "";
-    items.forEach((item) => {
-      const card = document.createElement("div");
-      card.className = "carousel-card";
-      card.innerHTML = `
-        <img src="${item.image}" alt="${item.title}" draggable="false" />
-        <div class="overlay"></div>
-        <div class="card-title">${item.title}</div>
-      `;
-      track.appendChild(card);
+  class Carousel {
+      constructor(element) {
+          this.element = element;
+          element.carouselInstance = this;
+          this.cards = Array.from(
+              element.querySelectorAll(
+                  ".carousel-card"
+              )
+          );
+          this.nextButton =
+              element.querySelector(".next");
+          this.prevButton =
+              element.querySelector(".prev");
+          /*
+           * Índice do card que está no centro
+           */
+          this.current = 0;
+          this.isAnimating = false;
+          this.render();
+          this.nextButton.addEventListener(
+              "click",
+              () => {
+                  this.next();
+              }
+          );
+          this.prevButton.addEventListener(
+              "click",
+              () => {
+                  this.prev();
+              }
+          );
+          
+      }
+      /* =====================================
+         RENDERIZA OS CARDS
+      ===================================== */
+      render() {
+
+    const total = this.cards.length;
+
+    const track =
+        this.element.querySelector(".carousel-track");
+
+    /* Largura real da track */
+
+    const trackWidth = track.offsetWidth;
+
+    /* Largura real do card */
+
+    const cardWidth =
+        this.cards[0].offsetWidth;
+
+    /* Espaçamento entre os cards */
+
+    const gap = 25;
+
+    /* Centro da track */
+
+    const center =
+        trackWidth / 2;
+
+    /* Distância entre os centros dos cards */
+
+    const sidePosition =
+        cardWidth + gap;
+
+
+    this.cards.forEach((card, index) => {
+
+        card.classList.remove(
+            "left",
+            "center",
+            "right",
+            "hidden-left",
+            "hidden-right"
+        );
+
+
+        /* Distância do card atual em relação ao card central */
+
+        let distance =
+            index - this.current;
+
+
+        /* Faz o carrossel ser infinito */
+
+        if (distance > total / 2) {
+
+            distance -= total;
+
+        }
+
+
+        if (distance < -total / 2) {
+
+            distance += total;
+
+        }
+
+
+        /* CARD CENTRAL */
+
+        if (distance === 0) {
+
+            card.classList.add("center");
+
+            card.style.left =
+                `${center}px`;
+
+        }
+
+
+        /* CARD DA ESQUERDA */
+
+        else if (distance === -1) {
+
+            card.classList.add("left");
+
+            card.style.left =
+                `${center - sidePosition}px`;
+
+        }
+
+
+        /* CARD DA DIREITA */
+
+        else if (distance === 1) {
+
+            card.classList.add("right");
+
+            card.style.left =
+                `${center + sidePosition}px`;
+
+        }
+
+
+        /* CARDS QUE ESTÃO ANTES */
+
+        else if (distance < 0) {
+
+            card.classList.add("hidden-left");
+
+            card.style.left =
+                `${center - sidePosition * 2}px`;
+
+        }
+
+
+        /* CARDS QUE ESTÃO DEPOIS */
+
+        else {
+
+            card.classList.add("hidden-right");
+
+            card.style.left =
+                `${center + sidePosition * 2}px`;
+
+        }
+
     });
+}
+      /* =====================================
+         PRÓXIMO
+      ===================================== */
+      next() {
+          if (this.isAnimating)
+              return;
+          this.isAnimating = true;
+          this.current++;
+          /*
+           * Loop infinito
+           */
+          if (
+              this.current >=
+              this.cards.length
+          ) {
+              this.current = 0;
+          }
+          this.render();
+          setTimeout(
+              () => {
+                  this.isAnimating = false;
+              },
+              600
+          );
+      }
+      /* =====================================
+         ANTERIOR
+      ===================================== */
+      prev() {
+          if (this.isAnimating)
+              return;
+          this.isAnimating = true;
+          this.current--;
+          /*
+           * Loop infinito
+           */
+          if (
+              this.current < 0
+          ) {
+              this.current =
+                  this.cards.length - 1;
+          }
+          this.render();
+          setTimeout(
+              () => {
+                  this.isAnimating = false;
+              },
+              600
+          );
+      }
   }
- 
-  function cardScrollDistance() {
-    const card = track.querySelector(".carousel-card");
-    const gap = 12;
-    return card ? card.offsetWidth + gap : 160;
-  }
- 
-  function updateButtons() {
-    const maxScroll = track.scrollWidth - track.clientWidth;
-    btnPrev.disabled = track.scrollLeft <= 4;
-    btnNext.disabled = track.scrollLeft >= maxScroll - 4;
-  }
- 
-  btnPrev.addEventListener("click", () => {
-    track.scrollBy({ left: -cardScrollDistance(), behavior: "smooth" });
-  });
- 
-  btnNext.addEventListener("click", () => {
-    track.scrollBy({ left: cardScrollDistance(), behavior: "smooth" });
-  });
- 
-  track.addEventListener("scroll", updateButtons, { passive: true });
-  window.addEventListener("resize", updateButtons);
- 
-  renderCards(ITEMS);
-  updateButtons();
+  /* =========================================
+     INICIA TODOS OS CARROSSÉIS
+  ========================================= */
+  document
+      .querySelectorAll(".carousel")
+      .forEach(
+          carousel => {
+              new Carousel(
+                  carousel
+              );
+          }
+      );
+
+    window.addEventListener("resize", () => {
+  document
+      .querySelectorAll(".carousel")
+      .forEach(element => {
+          const carousel =
+              element.carouselInstance;
+          if (carousel) {
+              carousel.render();
+          }
+      });
+
+});
 
 
   // ══════════════════════════════════════════════════════════════
@@ -244,6 +426,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function abrirSidebar() {
     sidebar.classList.add("aberta");
     sidebar.setAttribute("aria-hidden", "false");
+    sidebar.inert = false;
     overlay.classList.add("ativo");
     btnFechar.focus();
   }
@@ -251,6 +434,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function fecharSidebar() {
     sidebar.classList.remove("aberta");
     sidebar.setAttribute("aria-hidden", "true");
+    sidebar.inert = true;
     overlay.classList.remove("ativo");
     btnAbrir.focus();
   }
@@ -314,8 +498,71 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  const selTipoFonte = document.getElementById("selTipoFonte");
+  if (selTipoFonte) {
+    selTipoFonte.addEventListener("change", function () {
+      document.body.classList.remove("fonte-dislexia", "fonte-discalculia");
+      if (this.value !== "padrao") {
+        document.body.classList.add("fonte-" + this.value);
+      }
+    });
+  }
+
   // ─── Toggle: Cursor personalizado ─────────────────────────────
   document.getElementById("togCursor").addEventListener("change", function () {
     document.body.classList.toggle("cursor-padrao", !this.checked);
   });
+
+  // ─── Música de fundo ─────────────────────
+  //
+  // Nunca toca sozinha (nada de autoplay): só inicia quando a pessoa
+  // clica no botão do header ou liga o toggle "Música de fundo" no
+  // painel — os dois controles refletem e controlam o mesmo estado,
+  // ficando sempre sincronizados entre si.
+  const musicaFundo = document.getElementById("musicaFundo");
+  const btnMusica = document.getElementById("btnMusica");
+  const togMusica = document.getElementById("togMusica");
+
+  if (musicaFundo && btnMusica && togMusica) {
+    musicaFundo.volume = 0.35;
+
+    function tocarMusica() {
+      // .play() retorna uma Promise que pode rejeitar (ex: arquivo
+      // musica-fundo.mp3 ainda não foi adicionado nesta página, ou o
+      // navegador bloqueou por algum motivo). Isso não deve quebrar o
+      // resto do site — apenas a música não começa.
+      musicaFundo.play().then(() => {
+        btnMusica.classList.add("tocando");
+        btnMusica.setAttribute("aria-pressed", "true");
+        btnMusica.setAttribute("aria-label", "Pausar música de fundo");
+        togMusica.checked = true;
+      }).catch(() => {
+        pausarMusica();
+      });
+    }
+
+    function pausarMusica() {
+      musicaFundo.pause();
+      btnMusica.classList.remove("tocando");
+      btnMusica.setAttribute("aria-pressed", "false");
+      btnMusica.setAttribute("aria-label", "Tocar música de fundo");
+      togMusica.checked = false;
+    }
+
+    btnMusica.addEventListener("click", () => {
+      if (btnMusica.classList.contains("tocando")) {
+        pausarMusica();
+      } else {
+        tocarMusica();
+      }
+    });
+
+    togMusica.addEventListener("change", function () {
+      if (this.checked) {
+        tocarMusica();
+      } else {
+        pausarMusica();
+      }
+    });
+  }
 })
