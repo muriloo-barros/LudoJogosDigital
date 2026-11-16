@@ -137,8 +137,7 @@ function renderCards() {
         btn.style.background = l.cor;
         btn.dataset.letra = l.letra;
         btn.setAttribute('aria-label', 'Sinal de Libras da letra ' + l.letra);
-        btn.innerHTML = '<span class="card-mao" aria-hidden="true">✋</span>' +
-                        '<span class="card-letra">' + l.letra + '</span>';
+        btn.innerHTML = conteudoSinal(l.letra);
         btn.addEventListener('click', function () {
             if (!aceitandoInput || reproduzindo) return;
             if (l.letra === sequencia[etapa].letra) {
@@ -149,6 +148,13 @@ function renderCards() {
         });
         cardsGrid.appendChild(btn);
     });
+}
+
+// Cartinha com o desenho do sinal; se o PNG não existir, mostra a letra
+function conteudoSinal(letra) {
+    return '<img class="card-sinal-img" src="imgs/libras/' + letra + '.png" ' +
+           'alt="Sinal de Libras da letra ' + letra + '" ' +
+           'onerror="this.outerHTML=\'<span class=&quot;card-letra&quot;>' + letra + '</span>\'">';
 }
 
 function cardDe(letra) {

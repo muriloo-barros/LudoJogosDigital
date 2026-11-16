@@ -202,8 +202,7 @@ function renderOpcoes() {
             const l = MAPA_LETRAS[op.valor];
             btn.className = 'card-sinal';
             btn.style.background = l.cor;
-            btn.innerHTML = '<span class="card-mao" aria-hidden="true">✋</span>' +
-                            '<span class="card-letra">' + op.valor + '</span>';
+            btn.innerHTML = conteudoSinal(op.valor);
             btn.setAttribute('aria-label', 'Sinal de Libras da letra ' + op.valor);
         }
         btn.addEventListener('click', function () {
