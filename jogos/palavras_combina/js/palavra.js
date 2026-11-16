@@ -37,7 +37,7 @@ const NIVEIS = [
     { nome: 'Difícil',   rounds: 5, modo: 'normal', flash: 0,    distratores: 'mesma' },
     { nome: 'Invertido', rounds: 5, modo: 'invertido' }
 ];
-const TEMPO_PAR = 2500; // duração da fase de memorização do par (Difícil)
+const TEMPO_PAR = 2500;
 
 // ─── Estado ──────────────────────────────────────────────────────
 let nivelAtual = 0;
@@ -87,8 +87,6 @@ function falarSeguro(texto, callback) {
         chamado = true;
         if (meuToken === tokenFala && typeof callback === 'function') callback();
     }
-    // ⏱️ Timeout de segurança: callback SEMPRE dispara, mesmo se a
-    // narração falhar, for interrompida ou não suportar callback.
     const tempoSeguranca = Math.max(1500, texto.length * 60 + 1000);
     setTimeout(disparar, tempoSeguranca);
     if (typeof falar === 'function') {
@@ -102,7 +100,6 @@ function falarSeguro(texto, callback) {
         if (typeof config !== 'undefined' && config.velocidade) utt.rate = config.velocidade;
         const startTime = Date.now();
         utt.onend = function () {
-            // Chrome bug: onend dispara antes da fala terminar de verdade
             const minMs = Math.max(800, texto.length * 55);
             const wait = Math.max(0, minMs - (Date.now() - startTime));
             setTimeout(disparar, wait);
@@ -158,6 +155,13 @@ function letraAleatoria(exceto) {
     return l;
 }
 
+// ─── Desenho do sinal dentro da cartinha (fallback: letra) ───────
+function conteudoSinal(letra) {
+    return '<img class="card-sinal-img" src="imgs/libras/' + letra + '.png" ' +
+           'alt="Sinal de Libras da letra ' + letra + '" ' +
+           'onerror="this.outerHTML=\'<span class=&quot;card-letra&quot;>' + letra + '</span>\'">';
+}
+
 // ─── Mostrar sinal no palco (imagem ou fallback) ─────────────────
 function mostrarSinal(letra) {
     palcoPalavra.classList.add('escondido');
@@ -171,7 +175,6 @@ function mostrarSinal(letra) {
         imgSinal.style.display = 'block';
         fallbackEl.classList.add('escondido');
     };
-    // Sem imagem ou com erro → letra gigante permanece (nada quebra)
     img.src = 'imgs/libras/' + letra + '.png';
 }
 function esconderSinal() {
@@ -234,7 +237,6 @@ function carregarRound() {
     opcoesArea.innerHTML = '';
 
     if (nivel.modo === 'invertido') {
-        // INVERTIDO: palavra no palco → criança escolhe o sinal
         opcoes = shuffle([
             { valor: alvo, correta: true },
             { valor: letraAleatoria([alvo]), correta: false },
@@ -253,13 +255,10 @@ function carregarRound() {
         renderOpcoes();
         aceitandoInput = true;
     } else {
-        // Sinal no palco → criança escolhe a palavra
         let distratores = [];
         if (nivel.distratores === 'mesma') {
-            // DIFÍCIL: as 3 palavras da MESMA letra — exige a memorização do par
             distratores = BANCO[alvo].slice();
         } else {
-            // FÁCIL/MÉDIO: iniciais diferentes — reconhecimento da letra
             const l1 = letraAleatoria([alvo]);
             const l2 = letraAleatoria([alvo, l1]);
             distratores = [BANCO[l1][Math.floor(Math.random() * BANCO[l1].length)],
@@ -275,7 +274,6 @@ function carregarRound() {
         renderOpcoes();
 
         if (nivel.distratores === 'mesma') {
-            // DIFÍCIL: fase de memorização do par sinal ↔ palavra
             instrucao.textContent = '👀 Memorize o par! O sinal e a palavra vão aparecer juntos...';
             palcoDica.classList.add('palavra-par');
             palcoDica.textContent = '✋ ' + alvo + ' = ' + palavraAlvo;
@@ -293,7 +291,6 @@ function carregarRound() {
             mostrarLegenda(frase);
 
             if (nivel.flash > 0) {
-                // MÉDIO: o sinal pisca e some — depois libera o input
                 flashTimer = setTimeout(function () {
                     esconderSinal();
                     aceitandoInput = true;
@@ -336,14 +333,12 @@ function errar(btn) {
     void btn.offsetWidth;
     btn.classList.add('errado');
 
-    // Destaca a opção correta (fica visível até a criança acertar)
     opcoesArea.querySelectorAll('.card-palavra, .card-sinal').forEach(function (c) {
         const op = opcoes.find(function (o) { return o.valor === c.dataset.valor; });
         if (op && op.correta) c.classList.add('correta');
     });
     palcoPalavra.classList.add('correta');
 
-    // Reexibe o sinal (nos níveis com flash/memorização ele havia sumido)
     if (NIVEIS[nivelAtual].modo === 'normal') mostrarSinal(alvo);
 
     const frase = 'Opa! A resposta certa é ' +
