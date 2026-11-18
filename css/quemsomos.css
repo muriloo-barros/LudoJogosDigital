@@ -952,6 +952,7 @@ footer p{
     z-index: calc(var(--z-header) + 1);
     pointer-events: none;
 }
+
 .folha-tl { top: -8px; left: -8px;  transform: rotate(-15deg); }
 .folha-tr { top: -8px; right: -8px; transform: rotate(75deg);  }
 .folha-bl { bottom: -8px; left: -8px;  transform: rotate(195deg); }
@@ -1158,4 +1159,22 @@ body.fonte-grande .placa-header .btn-acessibilidade svg {
 body.fonte-pequena .placa-header {
     padding: 8px 14px;
     gap: 12px;
+}
+
+.nos{
+  margin: 0 auto;
+  margin-bottom: 100px;
+  background-color: #6ad5ffdb;
+  width: 850px;
+  height: 850px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nos img{
+  height: 800px;
+  width: 800px;
+  border-radius: 10px;
 }
