@@ -343,3 +343,12 @@ body.sem-animacoes .card-palavra, body.sem-animacoes .card-sinal, body.sem-anima
     .card-sinal .card-letra { font-size: 34px; }
     .card-sinal .card-mao { font-size: 30px; }
 }
+
+/* Desenho do sinal dentro da cartinha */
+.card-sinal-img {
+    width: 78%;
+    height: 78%;
+    object-fit: contain;
+    pointer-events: none;
+    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.35));
+}

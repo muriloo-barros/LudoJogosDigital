@@ -1,8 +1,8 @@
 // ════════════════════════════════════════════════════════════════
 // SEQUÊNCIA DE LIBRAS — Lógica do jogo
 // Estilo Genius com alfabeto manual de Libras
-// Vídeos em videos/A.mp4 ... videos/F.mp4 (placeholders ok)
-// Sem vídeo? Fallback automático: letra em destaque + tom + narração
+// Sinais em imgs/libras/A.png ... F.png
+// Sem imagem? Fallback automático: letra em destaque + tom + narração
 // ════════════════════════════════════════════════════════════════
 
 (function () {
@@ -36,7 +36,7 @@ let etapa = 0;
 let aceitandoInput = false;
 let errosTotal = 0;
 let reproduzindo = false;
-let videoOk = true; // vira false se o primeiro vídeo falhar
+let videoOk = true;
 
 // ─── DOM ─────────────────────────────────────────────────────────
 const telaInicio = document.getElementById('tela-inicio');
@@ -128,7 +128,13 @@ function somSuaVez() { beep(523, 0.1, 'sine', 0.1); setTimeout(function () { bee
 function somNivel()  { beep(523, 0.12, 'sine', 0.1); setTimeout(function () { beep(659, 0.12, 'sine', 0.1); }, 130); setTimeout(function () { beep(784, 0.2, 'sine', 0.1); }, 260); }
 function somVitoria(){ beep(523, 0.15, 'sine', 0.1); setTimeout(function () { beep(659, 0.15, 'sine', 0.1); }, 150); setTimeout(function () { beep(784, 0.15, 'sine', 0.1); }, 300); setTimeout(function () { beep(1047, 0.25, 'sine', 0.1); }, 450); }
 
-// ─── Cards dos sinais ────────────────────────────────────────────
+// ─── Cards dos sinais (desenho do sinal; se não existir, mostra a letra) ──
+function conteudoSinal(letra) {
+    return '<img class="card-sinal-img" src="imgs/libras/' + letra + '.png" ' +
+           'alt="Sinal de Libras da letra ' + letra + '" ' +
+           'onerror="this.outerHTML=\'<span class=&quot;card-letra&quot;>' + letra + '</span>\'">';
+}
+
 function renderCards() {
     cardsGrid.innerHTML = '';
     LETRAS.forEach(function (l) {
@@ -137,8 +143,7 @@ function renderCards() {
         btn.style.background = l.cor;
         btn.dataset.letra = l.letra;
         btn.setAttribute('aria-label', 'Sinal de Libras da letra ' + l.letra);
-        btn.innerHTML = '<span class="card-mao" aria-hidden="true">✋</span>' +
-                        '<span class="card-letra">' + l.letra + '</span>';
+        btn.innerHTML = conteudoSinal(l.letra);
         btn.addEventListener('click', function () {
             if (!aceitandoInput || reproduzindo) return;
             if (l.letra === sequencia[etapa].letra) {
@@ -168,7 +173,6 @@ function tocarSinal(letra, done) {
     beep(l.freq, 0.18, 'sine', 0.09);
     mostrarLegenda('Sinal: letra ' + l.letra);
 
-    // Fallback por padrão; se a imagem existir, assume o comando
     fallbackEl.textContent = '✋ ' + l.letra;
     fallbackEl.classList.remove('escondido');
     videoEl.style.display = 'none';
@@ -180,7 +184,6 @@ function tocarSinal(letra, done) {
         videoEl.style.display = 'block';
         fallbackEl.classList.add('escondido');
     };
-    // Sem imagem ou com erro → letra gigante permanece (nada quebra)
     img.src = 'imgs/libras/' + letra + '.png';
 
     setTimeout(function () {
@@ -271,11 +274,10 @@ function repetirSequencia() {
     });
 }
 
-// ─── Acertou (destaque temporário: o card continua clicável, pois a
-//     letra pode aparecer de novo na sequência) ─────────────────────
+// ─── Acertou ─────────────────────────────────────────────────────
 function acertarCard(btn) {
     btn.classList.remove('acerto-pulse');
-    void btn.offsetWidth; // reinicia a animação
+    void btn.offsetWidth;
     btn.classList.add('acerto-pulse');
     somAcerto();
     etapa++;
@@ -297,7 +299,6 @@ function errarCard(btn) {
     void btn.offsetWidth;
     btn.classList.add('errado');
 
-    // Reexibe o sinal esperado no palco
     const esperado = sequencia[etapa].letra;
     aceitandoInput = false;
     tocarSinal(esperado, function () {
@@ -401,7 +402,7 @@ btnStart.addEventListener('click', function () {
     nivelAtual = 0;
     roundAtual = 0;
     errosTotal = 0;
-    videoOk = true; // re-tenta os vídeos a cada partida
+    videoOk = true;
     trocarTela(telaJogo);
     carregarRound();
 });
